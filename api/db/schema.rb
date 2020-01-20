@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_18_202253) do
+ActiveRecord::Schema.define(version: 2020_01_20_050648) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.string "channel_id"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2020_01_18_202253) do
     t.integer "keep"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "keep_count", default: 8, null: false
+    t.integer "look_back_count", default: 32, null: false
   end
 
   create_table "videos", force: :cascade do |t|
