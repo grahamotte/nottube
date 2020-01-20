@@ -7,6 +7,7 @@ class AddBasicModels < ActiveRecord::Migration[6.0]
       t.string :thumbnail_url
       t.text :description
       t.integer :video_count
+      t.integer :subscriber_count
       t.integer :keep
       t.timestamps
     end

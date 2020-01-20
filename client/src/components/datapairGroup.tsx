@@ -1,28 +1,24 @@
-import { Column, Columns, Content } from "bloomer";
+import { Column, Columns, Content, Tile } from "bloomer";
 
 import React from "react";
 
 export default (props: any) => {
-  const colStyle = { paddingTop: 0, paddingBottom: 0 };
+  const colStyle = {};
 
   const datapairs = Object.keys(props.pairs).map((p: any, pi: number) => {
     return (
-      <Columns key={pi}>
-        <Column style={colStyle} isSize="1/3">
+      <div>
+        <Tile>
           <small>
             <b>{p}</b>
           </small>
-        </Column>
-        <Column style={colStyle} isSize="2/3">
+        </Tile>
+        <Tile>
           <small>{props.pairs[p]}</small>
-        </Column>
-      </Columns>
+        </Tile>
+      </div>
     );
   });
 
-  return (
-    <Content style={{ paddingTop: "0.5rem", paddingBottom: "0.5rem" }}>
-      {datapairs}
-    </Content>
-  );
+  return <Content>{datapairs}</Content>;
 };

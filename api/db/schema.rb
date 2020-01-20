@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2020_01_18_202253) do
     t.string "thumbnail_url"
     t.text "description"
     t.integer "video_count"
+    t.integer "subscriber_count"
     t.integer "keep"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -30,6 +31,7 @@ ActiveRecord::Schema.define(version: 2020_01_18_202253) do
     t.datetime "published_at"
     t.string "title"
     t.string "thumbnail_url"
+    t.string "file_name"
     t.text "description"
     t.integer "duration"
     t.boolean "to_download", default: false, null: false

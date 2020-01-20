@@ -1,4 +1,4 @@
-import { Column, Columns, Control, Field, Input } from "bloomer";
+import { Column, Columns, Content, Control, Field, Input } from "bloomer";
 
 import Layout from "../components/layout";
 import LoadedButton from "../components/loadedButton";
@@ -15,49 +15,36 @@ class Klass extends React.Component {
   render() {
     return (
       <Layout>
-        <Columns isCentered>
-          <Column>
-            <Field>
-              <Control>
-                <Input
-                  type="text"
-                  placeholder="Add URL"
-                  onChange={event => {
-                    let element = event.currentTarget as HTMLInputElement;
-                    this.setState({ addUrl: element.value });
-                  }}
-                />
-              </Control>
-            </Field>
-          </Column>
-          <Column>
-            <Field isGrouped>
-              <Control>
-                <LoadedButton
-                  label="Add"
-                  color="primary"
-                  url="http://localhost:3001/subscriptions"
-                  method="post"
-                  data={{ url: this.state.addUrl }}
-                  then={() => {
-                    store.ui.successNotification(`Added ${this.state.addUrl}!`);
-                    this.setState({ addUrl: "" });
-                  }}
-                />
-              </Control>
-            </Field>
-          </Column>
-        </Columns>
-
-        <Columns isMultiline={true} isCentered={true}>
+        <Field hasAddons>
+          <Control>
+            <Input
+              type="text"
+              placeholder="Add by URL"
+              onChange={event => {
+                let element = event.currentTarget as HTMLInputElement;
+                this.setState({ addUrl: element.value });
+              }}
+            />
+          </Control>
+          <Control>
+            <LoadedButton
+              label="Add"
+              color="primary"
+              url="http://localhost:3001/subscriptions"
+              method="post"
+              data={{ url: this.state.addUrl }}
+              then={() => {
+                store.ui.successNotification(`Added ${this.state.addUrl}!`);
+                this.setState({ addUrl: "" });
+              }}
+            />
+          </Control>
+        </Field>
+        <div className="card-columns columns-3-desktop columns-2-tablet columns-1-mobile">
           {store.subscriptions.all.map((s, si) => {
-            return (
-              <Column isSize="1/4" key={si}>
-                <SubscriptionCard s={s} />
-              </Column>
-            );
+            return <SubscriptionCard s={s} />;
           })}
-        </Columns>
+        </div>
       </Layout>
     );
   }

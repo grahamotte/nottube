@@ -2,16 +2,17 @@
 #
 # Table name: subscriptions
 #
-#  id            :integer          not null, primary key
-#  channel_id    :string
-#  url           :string
-#  title         :string
-#  thumbnail_url :string
-#  description   :text
-#  video_count   :integer
-#  keep          :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  id               :integer          not null, primary key
+#  channel_id       :string
+#  url              :string           not null
+#  title            :string
+#  thumbnail_url    :string
+#  description      :text
+#  video_count      :integer
+#  subscriber_count :integer
+#  keep             :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
 class Subscription < ApplicationRecord
@@ -33,6 +34,7 @@ class Subscription < ApplicationRecord
       video_count: yt_channel.video_count,
       thumbnail_url: yt_channel.thumbnail_url,
       description: yt_channel.description,
+      subscriber_count: yt_channel.subscriber_count,
     )
   end
 end

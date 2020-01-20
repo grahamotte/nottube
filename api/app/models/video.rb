@@ -6,10 +6,13 @@
 #  subscription_id :integer
 #  video_id        :string
 #  published_at    :datetime
-#  video_title     :string
+#  title           :string
 #  thumbnail_url   :string
+#  file_name       :string
 #  description     :text
 #  duration        :integer
+#  to_download     :boolean          default(FALSE), not null
+#  downloaded      :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

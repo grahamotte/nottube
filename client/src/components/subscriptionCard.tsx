@@ -14,6 +14,7 @@ import {
   Modal,
   ModalBackground,
   ModalContent,
+  Subtitle,
   Table,
   Tag,
   Title
@@ -21,8 +22,18 @@ import {
 
 import DatapairGroup from "./datapairGroup";
 import React from "react";
+import colors from "../utils/colors";
 import { format } from "timeago.js";
 import { observer } from "mobx-react";
+
+const abreviateNumber = (value: number) => {
+  var length = (value + "").length,
+    index = Math.ceil((length - 3) / 3),
+    suffix = ["K", "M", "B", "T"];
+
+  if (length < 4) return value;
+  return (value / Math.pow(1000, index)).toFixed(1) + suffix[index - 1];
+};
 
 interface KlassInterface {
   s: any;
@@ -35,13 +46,6 @@ export default observer(
     };
 
     videoRow = (v: any, vi: number) => {
-      var description = "";
-      if (v.description) {
-        description = `${v.description.substring(0, 250)} ${
-          v.description.length > 250 ? "..." : ""
-        }`;
-      }
-
       var downloadTag;
       if (v.downloaded) {
         downloadTag = <Tag isColor="success">Downloaded</Tag>;
@@ -52,28 +56,26 @@ export default observer(
       }
 
       return (
-        <tr key={vi}>
-          <td style={{ width: "10%" }}>
-            <Image isSize="128x128" src={v.thumbnailUrl}></Image>
-          </td>
-
-          <td>
+        <Columns>
+          <Column isSize="1/4">
+            <img src={v.thumbnailUrl} />
+          </Column>
+          <Column isSize="1/4">
             <DatapairGroup
               pairs={{
-                ID: v.videoId,
                 Duration: `${(v.duration / 60).toFixed(2)} min`,
                 Published: format(v.publishedAt)
               }}
             />
             {downloadTag}
-          </td>
-
-          <td style={{ width: "50%" }}>
-            <small>
-              <b>{v.title}</b> {description}
-            </small>
-          </td>
-        </tr>
+          </Column>
+          <Column>
+            <b>{v.title}</b>
+            <p>
+              <small>{v.description}</small>
+            </p>
+          </Column>
+        </Columns>
       );
     };
 
@@ -83,14 +85,30 @@ export default observer(
       const nameAndThumb = (
         <Media>
           <MediaLeft>
-            <Image isSize="48x48" src={s.thumbnailUrl} />
+            <img
+              width="50px"
+              height="50px"
+              src={s.thumbnailUrl}
+              style={{ borderRadius: "50%" }}
+            />
           </MediaLeft>
           <MediaContent>
             <a href={s.url}>
-              <Title isSize={4}>{s.title}</Title>
+              <small>
+                <Title isSize={4}>{s.title}</Title>
+                <Subtitle>
+                  <i>{abreviateNumber(s.subscriberCount)} subs</i>
+                </Subtitle>
+              </small>
             </a>
           </MediaContent>
         </Media>
+      );
+
+      const description = (
+        <Content style={{ overflow: "hidden" }}>
+          <small>{s.description}</small>
+        </Content>
       );
 
       const subData = (
@@ -107,22 +125,28 @@ export default observer(
           <Card>
             <CardContent>
               {nameAndThumb}
-              <Content style={{ overflow: "hidden" }}>
-                <small>{s.description}</small>
-              </Content>
+              {description}
               <Content>{subData}</Content>
             </CardContent>
             <CardFooter>
-              <CardFooterItem
-                href="#"
-                onClick={() => {
-                  s.getVideos();
-                  this.setState({ videosActive: true });
-                }}
-              >
-                Videos
+              <CardFooterItem href="#" style={{ color: colors.text }}>
+                Update
               </CardFooterItem>
-              <CardFooterItem href="#">Delete</CardFooterItem>
+              {s.videoCount > 0 && (
+                <CardFooterItem
+                  href="#"
+                  onClick={() => {
+                    s.getVideos();
+                    this.setState({ videosActive: true });
+                  }}
+                  style={{ color: colors.text }}
+                >
+                  Videos
+                </CardFooterItem>
+              )}
+              <CardFooterItem href="#" style={{ color: colors.danger }}>
+                Remove
+              </CardFooterItem>
             </CardFooter>
           </Card>
 
@@ -131,18 +155,19 @@ export default observer(
               onClick={() => this.setState({ videosActive: false })}
             />
             <ModalContent style={{ width: "80%" }}>
-              <Box>
-                <Columns>
-                  <Column>{nameAndThumb}</Column>
-                  <Column>{subData}</Column>
-                </Columns>
-                <hr />
-                <Table>
-                  <tbody>
-                    {s.videos.map((v: any, vi: number) => this.videoRow(v, vi))}
-                  </tbody>
-                </Table>
-              </Box>
+              <Card>
+                <CardContent>
+                  <Columns>
+                    <Column>
+                      {nameAndThumb}
+                      {subData}
+                    </Column>
+                    <Column>{description}</Column>
+                  </Columns>
+                  <hr />
+                  {s.videos.map((v: any, vi: number) => this.videoRow(v, vi))}
+                </CardContent>
+              </Card>
             </ModalContent>
           </Modal>
         </div>

@@ -1,4 +1,4 @@
-import { action, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 
 import axios from 'axios'
 import store from './index'
@@ -9,7 +9,7 @@ class Video {
   @observable videoId : string = ''
   @observable title : string = ''
   @observable thumbnailUrl : string = ''
-  @observable description : string = ''
+  @observable descriptionText : string = ''
   @observable duration : number = 0
   @observable publishedAt : string = ''
   @observable createdAt : string = ''
@@ -24,12 +24,23 @@ class Video {
     this.publishedAt = params.published_at
     this.title = params.title
     this.thumbnailUrl = params.thumbnail_url
-    this.description = params.description
+    this.descriptionText = params.description
     this.duration = params.duration
     this.createdAt = params.created_at
     this.updatedAt = params.updated_at
     this.toDownload = params.to_download
     this.downloaded = params.downloaded
+  }
+
+  @computed
+  get description() {
+    const maxLen = 250
+
+    if (this.descriptionText) {
+      return `${this.descriptionText.substring(0, maxLen)} ${this.descriptionText.length > maxLen ? "..." : ""}`;
+    }
+
+    return 'No Description'
   }
 }
 
@@ -39,9 +50,10 @@ export default class Subscription {
   @observable url : string = ''
   @observable title : string = ''
   @observable thumbnailUrl : string = ''
-  @observable description : string = ''
+  @observable descriptionText : string = ''
   @observable videoCount : number = 0
   @observable updatedAt : string = ''
+  @observable subscriberCount : number = 0
   @observable videos : Video[] = []
 
   constructor(params : any) {
@@ -50,9 +62,21 @@ export default class Subscription {
     this.url = params.url
     this.title = params.title
     this.thumbnailUrl = params.thumbnail_url
-    this.description = params.description
+    this.descriptionText = params.description
     this.videoCount = params.video_count
     this.updatedAt = params.updated_at
+    this.subscriberCount = params.subscriber_count
+  }
+
+  @computed
+  get description() {
+    const maxLen = 350
+
+    if (this.descriptionText) {
+      return `${this.descriptionText.substring(0, maxLen)} ${this.descriptionText.length > maxLen ? "..." : ""}`;
+    }
+
+    return 'No Description'
   }
 
   @action getVideos = () => {
