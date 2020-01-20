@@ -14,5 +14,5 @@ Subscription.destroy_all
 subs.each do |sub|
   s = Subscription.create!(url: sub)
   s.refresh_metadata
-  SyncVideosJob.perform_now(s.id)
+  SyncVideosJob.perform_later(s.id)
 end

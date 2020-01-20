@@ -30,7 +30,7 @@ class Klass extends React.Component {
             <LoadedButton
               label="Add"
               color="primary"
-              url="http://localhost:3001/subscriptions"
+              url="http://localhost:3000/subscriptions"
               method="post"
               data={{ url: this.state.addUrl }}
               then={() => {

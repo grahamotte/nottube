@@ -12,13 +12,15 @@ class DownloadVideoJob < ApplicationJob
     file_name = "#{s.title} - #{v.title} - #{v.video_id}.mp4"
     full_file_path = "#{root_dir}/#{file_name}"
 
-    opts = [
+    yt_dl_cmd = [
       "youtube-dl",
       v.video_id,
       "-o \"#{full_file_path}\"",
       "--write-thumbnail"
-    ]
+    ].join(' ')
 
-    system(opts.join(' '))
+    system(yt_dl_cmd)
+
+    v.update!(file_name: file_name, downloaded: true)
   end
 end

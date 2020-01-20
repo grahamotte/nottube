@@ -12,7 +12,7 @@ export default class Klass {
   }
 
   @action refresh = () => {
-    axios.get('http://localhost:3001/subscriptions')
+    axios.get('http://localhost:3000/subscriptions')
     .then(response => {
       this.all = response.data.map((s : any) => new Subscription(s))
     })

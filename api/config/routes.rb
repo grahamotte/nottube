@@ -3,4 +3,5 @@ Rails.application.routes.draw do
 
   resources :subscriptions
   resources :videos
+  resources :jobs
 end
