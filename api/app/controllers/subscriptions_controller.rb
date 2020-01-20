@@ -1,7 +1,8 @@
 class SubscriptionsController < ApplicationController
   def create
-    s = Subscription.create!(channel_url: params.require(:url))
+    s = Subscription.create!(url: params.require(:url))
     s.refresh_metadata
+    SyncVideosJob.perform_later(s.id)
 
     head :ok
   end

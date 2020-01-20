@@ -1,7 +1,6 @@
 subs = [
   "https://www.youtube.com/user/Fullscreen",
   "https://www.youtube.com/channel/UCpZ5qUqpW4hW4zdfuBxMSJA",
-  "https://www.youtube.com/channel/UCSJ4gkVC6NrvII8umztf0Ow",
   "https://www.youtube.com/channel/UCdN4aXTrHAtfgbVG9HjBmxQ",
   "https://www.youtube.com/user/theloudmouth37",
   "https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g",

@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   CardContent,
   CardFooter,
@@ -7,7 +6,6 @@ import {
   Column,
   Columns,
   Content,
-  Image,
   Media,
   MediaContent,
   MediaLeft,
@@ -15,7 +13,6 @@ import {
   ModalBackground,
   ModalContent,
   Subtitle,
-  Table,
   Tag,
   Title
 } from "bloomer";
@@ -58,7 +55,7 @@ export default observer(
       return (
         <Columns>
           <Column isSize="1/4">
-            <img src={v.thumbnailUrl} />
+            <img src={v.thumbnailUrl} alt="video thumbnail" />
           </Column>
           <Column isSize="1/4">
             <DatapairGroup
@@ -90,6 +87,7 @@ export default observer(
               height="50px"
               src={s.thumbnailUrl}
               style={{ borderRadius: "50%" }}
+              alt="subscription thumbnail"
             />
           </MediaLeft>
           <MediaContent>

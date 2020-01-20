@@ -1,10 +1,8 @@
-import { Column, Columns, Content, Tile } from "bloomer";
+import { Content, Tile } from "bloomer";
 
 import React from "react";
 
 export default (props: any) => {
-  const colStyle = {};
-
   const datapairs = Object.keys(props.pairs).map((p: any, pi: number) => {
     return (
       <div>

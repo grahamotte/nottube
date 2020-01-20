@@ -1,4 +1,4 @@
-import { Column, Columns, Content, Control, Field, Input } from "bloomer";
+import { Control, Field, Input } from "bloomer";
 
 import Layout from "../components/layout";
 import LoadedButton from "../components/loadedButton";
@@ -34,6 +34,7 @@ class Klass extends React.Component {
               method="post"
               data={{ url: this.state.addUrl }}
               then={() => {
+                store.subscriptions.refresh();
                 store.ui.successNotification(`Added ${this.state.addUrl}!`);
                 this.setState({ addUrl: "" });
               }}

@@ -70,6 +70,9 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.0)
+    clockwork (2.0.4)
+      activesupport
+      tzinfo
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.6)
@@ -210,6 +213,7 @@ DEPENDENCIES
   annotate!
   bootsnap
   byebug
+  clockwork
   daemons
   delayed_job_active_record
   google-api-client

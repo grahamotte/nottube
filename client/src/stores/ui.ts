@@ -1,7 +1,7 @@
 import { action, observable } from "mobx";
 
 export default class Klass {
-  @observable page : string = 'queue'
+  @observable page : string = 'subscriptions'
   @observable notification : string = ''
   @observable notificationType : string = ''
 

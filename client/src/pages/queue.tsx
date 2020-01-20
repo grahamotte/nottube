@@ -1,20 +1,21 @@
-import { Content, Table } from "bloomer";
-
 import Layout from "../components/layout";
 import React from "react";
 import Spinner from "../components/spinner";
+import { Table } from "bloomer";
 import { format } from "timeago.js";
 import { observer } from "mobx-react";
 import store from "../stores";
 
 class Klass extends React.Component {
-  constructor(props: any) {
-    super(props);
-
-    store.jobs.refresh();
-  }
-
   render() {
+    if (store.jobs.all.length === 0) {
+      return (
+        <Layout>
+          <i>No jobs in the queue.</i>
+        </Layout>
+      );
+    }
+
     return (
       <Layout>
         <Table style={{ width: "100%" }}>

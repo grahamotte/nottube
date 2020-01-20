@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    foreman (0.87.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  foreman
+
+RUBY VERSION
+   ruby 2.6.3p62
+
+BUNDLED WITH
+   1.17.2
