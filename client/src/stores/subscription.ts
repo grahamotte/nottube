@@ -1,6 +1,7 @@
 import { action, computed, observable } from "mobx";
 
 import axios from 'axios'
+import host from '../utils/apiHost'
 import store from './index'
 
 class Video {
@@ -81,7 +82,7 @@ export default class Subscription {
 
   @action getVideos = () => {
     axios
-      .get(`http://localhost:3000/videos?subscription_id=${this.id}`)
+      .get(`${host}/videos?subscription_id=${this.id}`)
       .then(response => {
         this.videos = response.data.map((v : any) => new Video(v))
       })

@@ -4,6 +4,7 @@ import Layout from "../components/layout";
 import LoadedButton from "../components/loadedButton";
 import React from "react";
 import SubscriptionCard from "../components/subscriptionCard";
+import host from "../utils/apiHost";
 import { observer } from "mobx-react";
 import store from "../stores";
 
@@ -31,7 +32,7 @@ class Klass extends React.Component {
             <LoadedButton
               label="Add"
               color="primary"
-              url="http://localhost:3000/subscriptions"
+              url={`${host}/subscriptions`}
               method="post"
               data={{ url: this.state.addUrl }}
               then={() => {
@@ -43,7 +44,7 @@ class Klass extends React.Component {
         </Field>
         <div className="card-columns columns-3-desktop columns-2-tablet columns-1-mobile">
           {store.subscriptions.all.map((s, si) => {
-            return <SubscriptionCard s={s} />;
+            return <SubscriptionCard key={si} s={s} />;
           })}
         </div>
       </Layout>

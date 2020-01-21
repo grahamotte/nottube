@@ -6,7 +6,7 @@ class DownloadVideoJob < ApplicationJob
     return if v.downloaded
     return unless v.to_download
 
-    root_dir = Rails.application.credentials.videos_path
+    root_dir = ENV['PLEXTUBE_VIDEO_DIR'] || Rails.root.join('videos')
     FileUtils.mkdir_p(root_dir)
 
     file_name = "#{s.title} - #{v.title} - #{v.video_id}.mp4"

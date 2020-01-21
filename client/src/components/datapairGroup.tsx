@@ -5,7 +5,7 @@ import React from "react";
 export default (props: any) => {
   const datapairs = Object.keys(props.pairs).map((p: any, pi: number) => {
     return (
-      <div>
+      <div key={pi}>
         <Tile>
           <small>
             <b>{p}</b>

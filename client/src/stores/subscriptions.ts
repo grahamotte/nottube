@@ -2,6 +2,7 @@ import { action, observable } from "mobx";
 
 import Subscription from './subscription'
 import axios from 'axios'
+import host from '../utils/apiHost'
 import store from './index'
 
 export default class Klass {
@@ -12,7 +13,7 @@ export default class Klass {
   }
 
   @action refresh = () => {
-    axios.get('http://localhost:3000/subscriptions')
+    axios.get(`${host}/subscriptions`)
     .then(response => {
       this.all = response.data.map((s : any) => new Subscription(s))
     })
