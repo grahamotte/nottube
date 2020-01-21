@@ -18,6 +18,13 @@
 #
 
 class Subscription < ApplicationRecord
+  # validates :url, uniqueness: true
+  validates :channel_id, uniqueness: true
+
+  before_validation do
+    self.channel_id = Yt::URL.new(url).id
+  end
+
   has_many :videos
 
   def yt_channel

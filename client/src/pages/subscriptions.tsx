@@ -20,6 +20,7 @@ class Klass extends React.Component {
             <Input
               type="text"
               placeholder="Add by URL"
+              value={this.state.addUrl}
               onChange={event => {
                 let element = event.currentTarget as HTMLInputElement;
                 this.setState({ addUrl: element.value });
@@ -36,7 +37,6 @@ class Klass extends React.Component {
               then={() => {
                 store.subscriptions.refresh();
                 store.ui.successNotification(`Added ${this.state.addUrl}!`);
-                this.setState({ addUrl: "" });
               }}
             />
           </Control>
