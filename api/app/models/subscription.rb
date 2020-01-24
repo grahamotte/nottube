@@ -22,7 +22,7 @@ class Subscription < ApplicationRecord
   validates :channel_id, uniqueness: true
 
   before_validation do
-    self.channel_id = Yt::URL.new(url).id
+    self.channel_id ||= Yt::URL.new(url).id
   end
 
   has_many :videos

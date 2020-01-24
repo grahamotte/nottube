@@ -21,6 +21,52 @@ class Video < ApplicationRecord
   belongs_to :subscription
 
   default_scope { order('published_at desc') }
+  scope :downloaded, -> { where(downloaded: true) }
+
+  def file_name
+    read_attribute(:file_name) || derived_file_name
+  end
+
+  def derived_file_name
+    "#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{video_id || 'No Id'}.mp4"
+  end
+
+  def videos_dir
+    ENV['PLEXTUBE_VIDEO_DIR'] || Rails.root.join('videos')
+  end
+
+  def path
+    File.join(videos_dir, file_name)
+  end
+
+  def exists?
+    File.exists?(path)
+  end
+
+  def download!
+    return if downloaded
+    return unless to_download
+
+    update!(file_name: nil)
+
+    FileUtils.mkdir_p(videos_dir)
+
+    system(
+      [
+        "youtube-dl",
+        video_id,
+        "-o \"#{path}\"",
+        "--write-thumbnail"
+      ].join(' ')
+    )
+
+    update!(file_name: file_name, downloaded: true, to_download: false)
+  end
+
+  def remove!
+    File.delete(path) if exists?
+    update!(to_download: false, downloaded: false, file_name: nil)
+  end
 
   def yt_video
     @yt_video ||= Yt::Video.new(id: video_id)
