@@ -6,7 +6,7 @@ set :repo_url, "git@github.com:grahamotte/plextube.git"
 set :branch, 'master'
 
 set :default_environment, { 'PATH' => '$HOME/.rbenv/bin:$PATH' }
-append :linked_files, "api/config/master.key", 'api/db/development.sqlite3'
+append :linked_files, "api/config/master.key", 'api/db/development.sqlite3', 'youtube_api_key'
 
 desc 'start'
 task :start do
@@ -24,6 +24,7 @@ task :start do
         cd #{current_path}; \
         export REACT_APP_API_BASE=http://#{host}; \
         export PLEXTUBE_VIDEO_DIR=/mnt/collection/pt_vids; \
+        export PLEXTUBE_YOUTUBE_API_KEY=#{File.read('youtube_api_key')} \
         foreman start \
       '
     BASH
