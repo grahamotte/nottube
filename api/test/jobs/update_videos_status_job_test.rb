@@ -9,7 +9,7 @@ class UpdateVideoStatusJobTest < ActiveSupport::TestCase
     refute_predicate v.reload, :downloaded?
   end
 
-  def test_perform__exists_and_shceduled
+  def test_perform__exists_and_scheduled
     v = create_video(downloaded: false, to_download: true)
     Video.any_instance.expects(:exists?).returns(true)
 
@@ -17,6 +17,13 @@ class UpdateVideoStatusJobTest < ActiveSupport::TestCase
 
     assert_predicate v.reload, :downloaded?
     refute_predicate v.reload, :to_download?
+  end
+
+  def test_perform__downloads_to_download
+    v = create_video(downloaded: false, to_download: true)
+    DownloadVideoJob.expects(:perform_later).with(v.id)
+
+    UpdateVideosStatusJob.perform_now
   end
 
   def test_perform__keeps_only_recent
