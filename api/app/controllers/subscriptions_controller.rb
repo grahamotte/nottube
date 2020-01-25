@@ -8,6 +8,6 @@ class SubscriptionsController < ApplicationController
   end
 
   def index
-    render json: Subscription.all.map(&:attributes)
+    render json: Subscription.all.sort_by(&:updated_at).reverse.map(&:attributes)
   end
 end
