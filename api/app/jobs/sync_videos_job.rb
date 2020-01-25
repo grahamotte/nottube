@@ -1,8 +1,7 @@
 class SyncVideosJob < ApplicationJob
-  def perform(subscription_id, look_back: nil, keep: nil)
+  def perform(subscription_id, look_back: 3)
     # setup vars
     s = Subscription.find_by!(id: subscription_id)
-    look_back ||= s.look_back_count
     keep ||= s.keep_count
 
     # pull videos from YT and save their metadata
@@ -11,14 +10,15 @@ class SyncVideosJob < ApplicationJob
       v.refresh_metadata
     end
 
-    # mark videos which should be downloaded
+    # get current state of videos
     all = s.reload.videos
-    to_keep = all.first(keep)
-    to_keep.each { |v| v.update!(to_download: true) }
-    to_keep.each { |v| DownloadVideoJob.perform_later(v.id) }
+    to_keep = s.videos_to_keep
+    to_remove = (all - to_keep)
 
-    # mark which should no longer be downloaded
-    (all - to_keep).each { |v| v.update!(to_download: false) }
-    # TODO remove old vids
+    # cleanup and schedule downloads for ones to keep
+    to_keep.reject(&:watchable?).each { |v| DownloadVideoJob.perform_later(v.id) }
+
+    # remove the ones not staged to keep
+    to_remove.each { |v| v.remove! }
   end
 end

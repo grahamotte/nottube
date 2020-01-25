@@ -27,6 +27,10 @@ class Subscription < ApplicationRecord
 
   has_many :videos
 
+  def videos_to_keep
+    videos.first(keep_count)
+  end
+
   def yt_channel
     @yt_channel ||= Yt::Channel.new(id: channel_id)
   end

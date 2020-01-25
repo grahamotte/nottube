@@ -46,7 +46,7 @@ export default observer(
       var downloadTag;
       if (v.downloaded) {
         downloadTag = <Tag isColor="success">Downloaded</Tag>;
-      } else if (v.toDownload) {
+      } else if (v.scheduled) {
         downloadTag = <Tag isColor="info">Scheduled for download</Tag>;
       } else {
         downloadTag = <Tag isColor="warning">Not downloaded</Tag>;

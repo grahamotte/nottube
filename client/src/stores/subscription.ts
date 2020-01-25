@@ -15,7 +15,7 @@ class Video {
   @observable publishedAt : string = ''
   @observable createdAt : string = ''
   @observable updatedAt : string = ''
-  @observable toDownload : boolean = false
+  @observable scheduled : boolean = false
   @observable downloaded : boolean = false
 
   constructor(params : any) {
@@ -29,7 +29,7 @@ class Video {
     this.duration = params.duration
     this.createdAt = params.created_at
     this.updatedAt = params.updated_at
-    this.toDownload = params.to_download
+    this.scheduled = params.scheduled
     this.downloaded = params.downloaded
   }
 

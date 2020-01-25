@@ -11,7 +11,6 @@
 #  file_name       :string
 #  description     :text
 #  duration        :integer
-#  to_download     :boolean          default(FALSE), not null
 #  downloaded      :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -39,13 +38,24 @@ class Video < ApplicationRecord
     File.join(videos_dir, file_name)
   end
 
-  def exists?
+  def scheduled?
+    return false if downloaded?
+    return false if subscription.videos_to_keep.exclude?(self)
+
+    true
+  end
+
+  def watchable?
+    downloaded? && file_exists?
+  end
+
+  def file_exists?
     File.exists?(path)
   end
 
   def download!
-    return if downloaded
-    return unless to_download
+    return false if downloaded?
+    return false unless scheduled?
 
     update!(file_name: nil)
 
@@ -60,12 +70,12 @@ class Video < ApplicationRecord
       ].join(' ')
     )
 
-    update!(file_name: file_name, downloaded: true, to_download: false)
+    update!(file_name: file_name, downloaded: true)
   end
 
   def remove!
-    File.delete(path) if exists?
-    update!(to_download: false, downloaded: false, file_name: nil)
+    File.delete(path) if file_exists?
+    update!(downloaded: false, file_name: nil)
   end
 
   def yt_video

@@ -10,14 +10,21 @@ class ActiveSupport::TestCase
 
   setup do
     ENV['PLEXTUBE_VIDEO_DIR'] = '/mnt/lolvids'
-  end
+    FileUtils.stubs(:mkdir_p)
+    File.stubs(:delete)
+    Video.any_instance.stubs(:system)
 
-  def stub_all_yt
-    stub_yt_url_req
-  end
-
-  def stub_yt_url_req(ret = -1)
-    Yt::URL.stubs(:new).returns(stub(id: ret))
+    Yt::Channel.any_instance.stubs(:videos).returns([])
+    Yt::URL.stubs(:new).returns(stub(id: -1))
+    Yt::Video.stubs(:new).returns(
+      stub(
+        published_at: Time.now,
+        title: 'stubby title',
+        thumbnail_url: stub(thumbnail_url: 'http://t.url'),
+        description: 'this is not as it seems',
+        duration: 3342,
+      )
+    )
   end
 
   def create_subscription(attrs = {})
@@ -44,7 +51,6 @@ class ActiveSupport::TestCase
         file_name: 'file.name',
         description: 'just a vid yo',
         duration: 10101,
-        to_download: false,
         downloaded: false,
       )
     )
