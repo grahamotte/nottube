@@ -20,7 +20,7 @@ import { observer } from "mobx-react";
 import store from "../stores";
 
 const logo = seed => {
-  return ["P", "L", "E", "X", "-", "T", "U", "B", "E"].map(l => {
+  return ["P", "L", "E", "X", "<", "-", "T", "U", "B", "E"].map(l => {
     return Math.random() >= 0.5 ? (
       <span style={{ color: colors.accent }}>{l}</span>
     ) : (
