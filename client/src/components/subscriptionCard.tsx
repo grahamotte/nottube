@@ -16,12 +16,17 @@ import {
   Tag,
   Title
 } from "bloomer";
+import { FaCheck, FaList, FaRegTrashAlt, FaSync } from "react-icons/fa";
 
 import DatapairGroup from "./datapairGroup";
 import React from "react";
+import Spinner from "../components/spinner";
+import axios from "axios";
 import colors from "../utils/colors";
 import { format } from "timeago.js";
+import host from "../utils/apiHost";
 import { observer } from "mobx-react";
+import store from "../stores";
 
 const abreviateNumber = (value: number) => {
   var length = (value + "").length,
@@ -39,7 +44,9 @@ interface KlassInterface {
 export default observer(
   class Klass extends React.Component<KlassInterface> {
     state = {
-      videosActive: false
+      videosActive: false,
+      updated: false,
+      deleting: false
     };
 
     videoRow = (v: any, vi: number) => {
@@ -127,8 +134,23 @@ export default observer(
               <Content>{subData}</Content>
             </CardContent>
             <CardFooter>
-              <CardFooterItem href="#" style={{ color: colors.text }}>
-                Update
+              <CardFooterItem
+                href="#"
+                style={{ color: colors.text }}
+                onClick={() => {
+                  axios
+                    .post(`${host}/subscriptions/${s.id}/sync`)
+                    .then(response => {
+                      this.setState({ updated: true });
+                    })
+                    .catch(() => {
+                      store.ui.errorNotification(
+                        `Sync request for ${s.title} failed!`
+                      );
+                    });
+                }}
+              >
+                {this.state.updated ? <FaCheck /> : <FaSync />}
               </CardFooterItem>
               {s.videoCount > 0 && (
                 <CardFooterItem
@@ -139,11 +161,30 @@ export default observer(
                   }}
                   style={{ color: colors.text }}
                 >
-                  Videos
+                  <FaList />
                 </CardFooterItem>
               )}
-              <CardFooterItem href="#" style={{ color: colors.danger }}>
-                Remove
+              <CardFooterItem
+                href="#"
+                style={{ color: colors.danger }}
+                onClick={() => {
+                  this.setState({ deleting: true });
+
+                  axios
+                    .delete(`${host}/subscriptions/${s.id}`)
+                    .then(() => {
+                      store.subscriptions.refresh();
+                      this.setState({ deleting: false });
+                    })
+                    .catch(() => {
+                      store.ui.errorNotification(
+                        `Delete for ${s.title} failed! Some files may still remain.`
+                      );
+                      this.setState({ deleting: false });
+                    });
+                }}
+              >
+                {this.state.deleting ? <Spinner /> : <FaRegTrashAlt />}
               </CardFooterItem>
             </CardFooter>
           </Card>
