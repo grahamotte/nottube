@@ -1,7 +1,9 @@
+import { Column, Columns, Table } from "bloomer";
+
 import Layout from "../components/layout";
+import LoadedButton from "../components/loadedButton";
 import React from "react";
 import Spinner from "../components/spinner";
-import { Table } from "bloomer";
 import { format } from "timeago.js";
 import { observer } from "mobx-react";
 import store from "../stores";
@@ -18,6 +20,18 @@ class Klass extends React.Component {
 
     return (
       <Layout>
+        <Columns>
+          <Column isSize="2/3"></Column>
+          <Column isSize="1/3" className="has-text-right">
+            <LoadedButton
+              label="Clear All"
+              style={{ marginLeft: "0.25em" }}
+              isColor="primary"
+              isOutlined
+            />
+          </Column>
+        </Columns>
+
         <Table style={{ width: "100%" }}>
           <thead>
             <tr>

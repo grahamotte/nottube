@@ -51,9 +51,11 @@ export default observer(
 
       return (
         <Button
-          isColor={this.props.color}
+          isColor={this.props.color || this.props.isColor}
+          isOutlined={this.props.isOutlined}
           onClick={this.onClick}
           isLoading={this.state.loading}
+          style={this.props.style}
         >
           {this.state.loading ? loadingText : label}
         </Button>
