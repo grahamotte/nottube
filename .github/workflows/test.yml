@@ -1,0 +1,41 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install sqlite3
+      run: sudo apt install sqlite3 libsqlite3-dev
+
+    - name: Install Ruby
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+
+    - name: Bundle
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        cd api
+        bundle install --jobs 4 --retry 3
+
+    - name: Test API
+      run: |
+        cd api
+        bundle exec rake db:create RAILS_ENV=test
+        bundle exec rake db:migrate RAILS_ENV=test
+        bundle exec rake test
+
+    # - name: NPM install
+    # run: |
+    #   cd client
+    #   npm install
+
+    # - name: Build client
+    #   run: |
+    #     cd client
+    #     npm run build

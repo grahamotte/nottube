@@ -61,6 +61,25 @@ class VideosControllerTest < ActionController::TestCase
       }
     ]
 
-    assert_equal expected, JSON.parse(response.body)
+    expected.zip(JSON.parse(response.body)).each do |e, a|
+      assert_serialized_videos_equal(e, a)
+    end
+  end
+
+  private
+
+  def assert_serialized_videos_equal(e, a)
+    assert_equal e.dig('id'), a.dig('id')
+    assert_equal e.dig('subscription_id'), a.dig('subscription_id')
+    assert_equal e.dig('video_id'), a.dig('video_id')
+    assert_equal e.dig('title'), a.dig('title')
+    assert_equal e.dig('thumbnail_url'), a.dig('thumbnail_url')
+    assert_equal e.dig('file_name'), a.dig('file_name')
+    assert_equal e.dig('description'), a.dig('description')
+    assert_equal e.dig('duration'), a.dig('duration')
+    assert_equal e.dig('downloaded'), a.dig('downloaded')
+    assert_equal DateTime.parse(e.dig('published_at')), DateTime.parse(a.dig('published_at'))
+    assert_equal DateTime.parse(e.dig('created_at')), DateTime.parse(a.dig('created_at'))
+    assert_equal DateTime.parse(e.dig('updated_at')), DateTime.parse(a.dig('updated_at'))
   end
 end
