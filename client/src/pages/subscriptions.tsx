@@ -22,6 +22,7 @@ class Klass extends React.Component {
               <Control style={{ width: "100%" }}>
                 <Input
                   type="text"
+                  isColor="primary"
                   placeholder="Add by URL"
                   value={this.state.addUrl}
                   onChange={event => {
