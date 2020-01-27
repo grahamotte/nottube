@@ -4,9 +4,28 @@ import Layout from "../components/layout";
 import LoadedButton from "../components/loadedButton";
 import React from "react";
 import Spinner from "../components/spinner";
+import colors from "../utils/colors";
 import { format } from "timeago.js";
 import { observer } from "mobx-react";
 import store from "../stores";
+
+const Code = (props: any) => {
+  return (
+    <pre
+      style={{
+        whiteSpace: "pre-wrap",
+        wordWrap: "break-word",
+        height: "10em",
+        maxHeight: "10em",
+        overflow: "auto",
+        padding: "1em",
+        backgroundColor: props.color || "white"
+      }}
+    >
+      <code>{props.children}</code>
+    </pre>
+  );
+};
 
 class Klass extends React.Component {
   render() {
@@ -36,11 +55,11 @@ class Klass extends React.Component {
           <thead>
             <tr>
               <th></th>
+              <th>Attempts</th>
+              <th>Age</th>
               <th>Job</th>
               <th>Args</th>
-              <th>Attempts</th>
-              <th>Errors</th>
-              <th>Age</th>
+              <th>Error</th>
             </tr>
           </thead>
 
@@ -51,18 +70,22 @@ class Klass extends React.Component {
                   <td style={{ verticalAlign: "middle" }}>
                     {j.running && <Spinner />}
                   </td>
-                  <td style={{ verticalAlign: "middle" }}>{j.class}</td>
-                  <td style={{ verticalAlign: "middle" }}>{j.arguments}</td>
                   <td style={{ verticalAlign: "middle" }}>{j.attempts}</td>
+                  <td style={{ verticalAlign: "middle", whiteSpace: "nowrap" }}>
+                    {format(j.created_at)}
+                  </td>
+                  <td style={{ verticalAlign: "middle" }}>{j.class}</td>
+                  <td style={{ verticalAlign: "middle" }}>
+                    <Code>{j.arguments}</Code>
+                  </td>
                   <td
                     style={{
                       verticalAlign: "middle"
                     }}
                   >
-                    {j.error && j.error.length > 0 && <code>{j.error}</code>}
-                  </td>
-                  <td style={{ verticalAlign: "middle" }}>
-                    {format(j.created_at)}
+                    {j.error && j.error.length > 0 && (
+                      <Code color={colors.lightDanger}>{j.error}</Code>
+                    )}
                   </td>
                 </tr>
               );
