@@ -43,7 +43,7 @@ class Subscription < ApplicationRecord
     update!(channel_id: Yt::URL.new(url).id) if channel_id.blank?
 
     update!(
-      title: yt_channel.title,
+      title: yt_channel.title || yt_channel.content_owner,
       video_count: yt_channel.video_count,
       thumbnail_url: yt_channel.thumbnail_url,
       description: yt_channel.description,
