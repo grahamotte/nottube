@@ -20,5 +20,8 @@ class SyncVideosJob < ApplicationJob
 
     # remove the ones not staged to keep
     to_remove.each { |v| v.remove! }
+
+    # touch to show that it was updated
+    s.reload.touch
   end
 end
