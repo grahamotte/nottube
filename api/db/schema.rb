@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_24_235341) do
+ActiveRecord::Schema.define(version: 2020_02_01_221715) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
@@ -27,6 +27,11 @@ ActiveRecord::Schema.define(version: 2020_01_24_235341) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "settings", force: :cascade do |t|
+    t.string "yt_api_key"
+    t.string "videos_path"
+  end
+
   create_table "subscriptions", force: :cascade do |t|
     t.string "channel_id"
     t.string "url", null: false
@@ -39,7 +44,6 @@ ActiveRecord::Schema.define(version: 2020_01_24_235341) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "keep_count", default: 8, null: false
-    t.integer "look_back_count", default: 32, null: false
   end
 
   create_table "videos", force: :cascade do |t|

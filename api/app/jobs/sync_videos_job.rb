@@ -15,7 +15,10 @@ class SyncVideosJob < ApplicationJob
     to_keep = s.videos_to_keep
     to_remove = (all - to_keep)
 
-    # cleanup and schedule downloads for ones to keep
+    # ensure everything marked as downloaded is actually downloaded
+    all.each { |v| v.update!(downloaded: false) unless v.file_exists? }
+
+    # cleanup and schedule downloads for ones tos keep
     to_keep.reject(&:watchable?).each { |v| DownloadVideoJob.perform_later(v.id) }
 
     # remove the ones not staged to keep

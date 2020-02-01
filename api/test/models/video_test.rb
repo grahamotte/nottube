@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: videos
+#
+#  id              :integer          not null, primary key
+#  subscription_id :integer
+#  video_id        :string
+#  published_at    :datetime
+#  title           :string
+#  thumbnail_url   :string
+#  file_name       :string
+#  description     :text
+#  duration        :integer
+#  downloaded      :boolean          default(FALSE), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 require 'test_helper'
 
 class VideoTest < ActiveSupport::TestCase

@@ -23,8 +23,6 @@ task :start do
         #{eval_rbenv}; \
         cd #{current_path}; \
         export REACT_APP_API_BASE=http://#{host}; \
-        export PLEXTUBE_VIDEO_DIR=/mnt/collection/pt_vids; \
-        export PLEXTUBE_YOUTUBE_API_KEY=#{File.read('youtube_api_key')} \
         foreman start \
       '
     BASH

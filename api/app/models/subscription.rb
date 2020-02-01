@@ -13,8 +13,7 @@
 #  keep             :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  keep_count       :integer          default(10), not null
-#  look_back_count  :integer          default(100), not null
+#  keep_count       :integer          default(8), not null
 #
 
 class Subscription < ApplicationRecord

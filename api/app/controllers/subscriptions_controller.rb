@@ -21,8 +21,6 @@ class SubscriptionsController < ApplicationController
     s.reload.videos.each { |v| v.destroy! }
     s.destroy!
 
-    sleep 2
-
     head :ok
   end
 

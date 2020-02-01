@@ -27,15 +27,21 @@ class Video < ApplicationRecord
   end
 
   def derived_file_name
-    "#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{video_id || 'No Id'}.mp4"
+    "#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{video_id || 'No Id'}"
+  end
+
+  def video_formats
+    ["mp4", 'mkv', 'avi']
   end
 
   def videos_dir
-    ENV['PLEXTUBE_VIDEO_DIR'] || Rails.root.join('videos')
+    Setting.instance.videos_path || Rails.root.join('videos')
   end
 
   def path
-    File.join(videos_dir, file_name)
+    video_formats.find do |fmt|
+      File.join(videos_dir, "#{file_name}.#{fmt}")
+    end
   end
 
   def scheduled?
@@ -65,12 +71,12 @@ class Video < ApplicationRecord
       [
         "youtube-dl",
         video_id,
-        "-o \"#{path}\"",
+        "-o \"#{path}.#{video_formats.first}\"",
         "--write-thumbnail"
       ].join(' ')
     )
 
-    update!(file_name: file_name, downloaded: true)
+    update!(file_name: file_name, downloaded: true) if file_exists?
   end
 
   def remove!

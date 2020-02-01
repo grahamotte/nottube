@@ -1,6 +1,9 @@
 Yt.configure do |config|
-  config.api_key = ENV['PLEXTUBE_YOUTUBE_API_KEY']&.chomp&.strip
   config.log_level = :debug
+end
+
+Rails.configuration.after_initialize do
+  Setting.instance.configure_yt
 end
 
 ActiveSupport::Notifications.subscribe 'request.yt' do |*args|

@@ -8,4 +8,9 @@ Rails.application.routes.draw do
   end
   resources :videos
   resources :jobs
+  resources :settings, only: [:index] do
+    collection do
+      post :update
+    end
+  end
 end
