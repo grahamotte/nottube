@@ -16,6 +16,10 @@ class Setting < ApplicationRecord
   validate :yt_api_key_valid?
   validate :videos_path_exists?
 
+  def self.configure_yt
+    instance.configure_yt
+  end
+
   def configure_yt
     Yt.configure { |c| c.api_key = yt_api_key }
   end

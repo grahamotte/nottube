@@ -3,7 +3,7 @@ Yt.configure do |config|
 end
 
 Rails.configuration.after_initialize do
-  Setting.instance.configure_yt
+  Setting.configure_yt
 end
 
 ActiveSupport::Notifications.subscribe 'request.yt' do |*args|
