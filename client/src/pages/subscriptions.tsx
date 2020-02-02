@@ -52,6 +52,8 @@ class Klass extends React.Component {
               style={{ marginLeft: "0.25em" }}
               isColor="primary"
               isOutlined
+              url={`${host}/subscriptions/sync_all`}
+              method="post"
             />
           </Column>
         </Columns>

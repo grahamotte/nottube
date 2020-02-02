@@ -34,6 +34,12 @@ const field = (label: string, key: any) => {
 
 export default observer(
   class Klass extends React.Component {
+    constructor(props: any) {
+      super(props);
+
+      store.settings.refresh();
+    }
+
     render() {
       return (
         <Layout>

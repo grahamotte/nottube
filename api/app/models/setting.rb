@@ -5,6 +5,8 @@
 #  id          :integer          not null, primary key
 #  yt_api_key  :string
 #  videos_path :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 class Setting < ApplicationRecord

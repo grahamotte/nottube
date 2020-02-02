@@ -15,6 +15,12 @@ class SubscriptionsController < ApplicationController
     head :ok
   end
 
+  def sync_all
+    SyncMostRecentVideosJob.perform_later
+
+    head :ok
+  end
+
   def destroy
     s = Subscription.find_by!(id: params.require(:id))
     s.videos.where(downloaded: true).each { |v| v.remove! }
@@ -25,6 +31,18 @@ class SubscriptionsController < ApplicationController
   end
 
   def index
-    render json: Subscription.all.sort_by(&:updated_at).reverse.map(&:attributes)
+    render json: (
+      Subscription
+        .all
+        .includes(:videos)
+        .sort_by(&:updated_at)
+        .reverse
+        .map do |s|
+          s.attributes.merge(
+            videos_downloaded: s.videos.count(&:downloaded?),
+            videos_scheduled: s.videos.count(&:scheduled?),
+          )
+        end
+    )
   end
 end

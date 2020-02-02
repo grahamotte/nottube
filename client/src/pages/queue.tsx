@@ -6,6 +6,7 @@ import React from "react";
 import Spinner from "../components/spinner";
 import colors from "../utils/colors";
 import { format } from "timeago.js";
+import host from "../utils/apiHost";
 import { observer } from "mobx-react";
 import store from "../stores";
 
@@ -47,6 +48,8 @@ class Klass extends React.Component {
               style={{ marginLeft: "0.25em" }}
               isColor="primary"
               isOutlined
+              url={`${host}/jobs/destroy_all`}
+              method="post"
             />
           </Column>
         </Columns>

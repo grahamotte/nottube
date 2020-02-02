@@ -10,14 +10,12 @@
 #  description      :text
 #  video_count      :integer
 #  subscriber_count :integer
-#  keep             :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  keep_count       :integer          default(8), not null
 #
 
 class Subscription < ApplicationRecord
-  # validates :url, uniqueness: true
   validates :channel_id, uniqueness: true
 
   before_validation do

@@ -7,10 +7,6 @@ import store from "./index";
 export default class Klass {
   @observable attrs: { [key: string]: string } = {};
 
-  constructor() {
-    this.refresh();
-  }
-
   get(key: string) {
     return this.attrs[key];
   }

@@ -60,7 +60,7 @@ class VideoTest < ActiveSupport::TestCase
     Video
       .any_instance
       .expects(:system)
-      .with("youtube-dl abcd1234 -o \"SUPER - BEST VIDEO - abcd1234.mp4\" --write-thumbnail")
+      .with("youtube-dl abcd1234 -o \"#{Rails.root.join('videos', "SUPER - BEST VIDEO - abcd1234.mp4").to_s}\" --write-thumbnail")
 
     v = create_video(downloaded: false, video_id: 'abcd1234')
 

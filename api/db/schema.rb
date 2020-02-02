@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_02_005104) do
+ActiveRecord::Schema.define(version: 2020_02_02_031607) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
@@ -42,10 +42,9 @@ ActiveRecord::Schema.define(version: 2020_02_02_005104) do
     t.text "description"
     t.integer "video_count"
     t.integer "subscriber_count"
-    t.integer "keep"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "keep_count", default: 2, null: false
+    t.integer "keep_count", default: 8, null: false
   end
 
   create_table "videos", force: :cascade do |t|

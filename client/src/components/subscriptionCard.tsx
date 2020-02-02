@@ -16,11 +16,17 @@ import {
   Tag,
   Title
 } from "bloomer";
-import { FaCheck, FaList, FaRegTrashAlt, FaSync } from "react-icons/fa";
+import {
+  FaCheck,
+  FaList,
+  FaMinus,
+  FaPencilAlt,
+  FaRegTrashAlt,
+  FaSync
+} from "react-icons/fa";
 
 import DatapairGroup from "./datapairGroup";
 import React from "react";
-import Spinner from "../components/spinner";
 import axios from "axios";
 import colors from "../utils/colors";
 import { format } from "timeago.js";
@@ -61,10 +67,10 @@ export default observer(
 
       return (
         <Columns>
-          <Column isSize="1/4">
-            <img src={v.thumbnailUrl} alt="video thumbnail" />
+          <Column isSize="narrow">
+            <img width="250px" src={v.thumbnailUrl} alt="video thumbnail" />
           </Column>
-          <Column isSize="1/4">
+          <Column isSize="narrow">
             <DatapairGroup
               pairs={{
                 Duration: `${(v.duration / 60).toFixed(2)} min`,
@@ -117,12 +123,23 @@ export default observer(
       );
 
       const subData = (
-        <DatapairGroup
-          pairs={{
-            Videos: s.videoCount,
-            Updated: format(s.updatedAt)
-          }}
-        />
+        <Columns>
+          <Column>
+            <DatapairGroup
+              pairs={{
+                Videos: s.videoCount,
+                Updated: format(s.updatedAt)
+              }}
+            />
+          </Column>
+          <Column>
+            <DatapairGroup
+              pairs={{
+                Downloaded: `${s.videosDownloaded} / ${s.keepCount}`
+              }}
+            />
+          </Column>
+        </Columns>
       );
 
       return (
@@ -164,9 +181,12 @@ export default observer(
                   <FaList />
                 </CardFooterItem>
               )}
+              <CardFooterItem href="#" style={{ color: colors.text }}>
+                <FaPencilAlt />
+              </CardFooterItem>
               <CardFooterItem
                 href="#"
-                style={{ color: colors.danger }}
+                style={{ color: colors.text }}
                 onClick={() => {
                   this.setState({ deleting: true });
 
@@ -184,7 +204,7 @@ export default observer(
                     });
                 }}
               >
-                {this.state.deleting ? <Spinner /> : <FaRegTrashAlt />}
+                {this.state.deleting ? <FaMinus /> : <FaRegTrashAlt />}
               </CardFooterItem>
             </CardFooter>
           </Card>

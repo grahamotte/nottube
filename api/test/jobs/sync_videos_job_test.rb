@@ -15,19 +15,6 @@ class SyncVideosJobTest < ActiveSupport::TestCase
     end
   end
 
-  def test_perform__does_not_redownload
-    s = create_subscription(keep_count: 2)
-    a = create_video(subscription: s, published_at: Time.now - 1.day, downloaded: true)
-    b = create_video(subscription: s, published_at: Time.now - 2.day, downloaded: true)
-    c = create_video(subscription: s, published_at: Time.now - 3.day)
-    d = create_video(subscription: s, published_at: Time.now - 4.day)
-
-    Video.any_instance.stubs(:file_exists?).returns(:true)
-    DownloadVideoJob.expects(:perform_later).never
-
-    SyncVideosJob.perform_now(s.id)
-  end
-
   def test_perform__enqueues_job_for_undownloaded
     s = create_subscription(keep_count: 2)
     a = create_video(subscription: s, published_at: Time.now - 1.day, downloaded: true)
@@ -36,7 +23,7 @@ class SyncVideosJobTest < ActiveSupport::TestCase
     d = create_video(subscription: s, published_at: Time.now - 4.day)
 
     Video.any_instance.stubs(:file_exists?).returns(:true)
-    DownloadVideoJob.expects(:perform_later)
+    DownloadVideoJob.expects(:perform_later).twice
 
     SyncVideosJob.perform_now(s.id)
   end

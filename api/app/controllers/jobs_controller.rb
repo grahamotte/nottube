@@ -13,4 +13,10 @@ class JobsController < ApplicationController
 
     render json: jobs
   end
+
+  def destroy_all
+    Delayed::Job.all.each { |j| j.destroy! }
+
+    head :ok
+  end
 end
