@@ -2,9 +2,7 @@ Yt.configure do |config|
   config.log_level = :debug
 end
 
-Rails.configuration.after_initialize do
-  Setting.configure_yt
-end
+Setting.configure_yt if ActiveRecord::Base.connection.table_exists?('settings')
 
 ActiveSupport::Notifications.subscribe 'request.yt' do |*args|
   Rails.logger.info(args)

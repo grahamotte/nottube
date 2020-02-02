@@ -13,24 +13,26 @@ class Setting < ApplicationRecord
   validates :yt_api_key, presence: true
   validates :videos_path, presence: true
 
-  validate :yt_api_key_valid?
-  validate :videos_path_exists?
+  validate :validate_yt_api_key
+  validate :validate_videos_path_presence
 
   def self.configure_yt
     instance.configure_yt
   end
 
   def configure_yt
+    return if yt_api_key.blank?
     Yt.configure { |c| c.api_key = yt_api_key }
   end
 
-  def yt_api_key_valid?
+  def validate_yt_api_key
+    return if yt_api_key.blank?
     Yt::Collections::Videos.new.first
   rescue Yt::Errors::RequestError
     errors.add(:base, 'youtube API key is not valid')
   end
 
-  def videos_path_exists?
+  def validate_videos_path_presence
     return unless videos_path.present?
     return if Dir.exists?(videos_path)
 
