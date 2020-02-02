@@ -9,7 +9,7 @@ class VideosController < ApplicationController
           video_id: v.video_id,
           title: v.title,
           thumbnail_url: v.thumbnail_url,
-          file_name: v.file_name,
+          file_path: v.file_path,
           description: v.description,
           duration: v.duration,
           downloaded: v.downloaded,

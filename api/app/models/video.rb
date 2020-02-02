@@ -8,7 +8,7 @@
 #  published_at    :datetime
 #  title           :string
 #  thumbnail_url   :string
-#  file_name       :string
+#  file_path       :string
 #  description     :text
 #  duration        :integer
 #  downloaded      :boolean          default(FALSE), not null
@@ -22,11 +22,11 @@ class Video < ApplicationRecord
   default_scope { order('published_at desc') }
   scope :downloaded, -> { where(downloaded: true) }
 
-  def file_name
-    read_attribute(:file_name) || derived_file_name
+  def videos_dir
+    Setting.instance.videos_path || Rails.root.join('videos').to_s
   end
 
-  def derived_file_name
+  def derived_title
     "#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{video_id || 'No Id'}"
   end
 
@@ -34,14 +34,19 @@ class Video < ApplicationRecord
     ["mp4", 'mkv', 'avi']
   end
 
-  def videos_dir
-    Setting.instance.videos_path || Rails.root.join('videos')
+  def default_file_path
+    "#{derived_title}.#{video_formats.first}"
   end
 
-  def path
-    video_formats.find do |fmt|
-      File.join(videos_dir, "#{file_name}.#{fmt}")
-    end
+  def possible_file_paths
+    [
+      read_attribute(:file_path),
+      *video_formats.map { |fmt| File.join(videos_dir, "#{derived_title}.#{fmt}") }
+    ].compact
+  end
+
+  def file_path
+    possible_file_paths.find { |fp| File.exists?(fp) }
   end
 
   def scheduled?
@@ -51,19 +56,18 @@ class Video < ApplicationRecord
     true
   end
 
-  def watchable?
-    downloaded? && file_exists?
+  def file_exists?
+    return false if file_path.blank?
+    File.exists?(file_path)
   end
 
-  def file_exists?
-    File.exists?(path)
+  def watchable?
+    downloaded? && file_exists?
   end
 
   def download!
     return false if downloaded?
     return false unless scheduled?
-
-    update!(file_name: nil)
 
     FileUtils.mkdir_p(videos_dir)
 
@@ -71,17 +75,17 @@ class Video < ApplicationRecord
       [
         "youtube-dl",
         video_id,
-        "-o \"#{path}.#{video_formats.first}\"",
+        "-o \"#{default_file_path}\"",
         "--write-thumbnail"
       ].join(' ')
     )
 
-    update!(file_name: file_name, downloaded: true) if file_exists?
+    update!(file_path: file_path, downloaded: true) if file_exists?
   end
 
   def remove!
-    File.delete(path) if file_exists?
-    update!(downloaded: false, file_name: nil)
+    File.delete(file_path) if file_exists?
+    update!(downloaded: false, file_path: nil)
   end
 
   def yt_video

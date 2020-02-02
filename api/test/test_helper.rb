@@ -4,16 +4,18 @@ require 'rails/test_help'
 require 'webmock/minitest'
 require 'mocha/minitest'
 
+WebMock.disable_net_connect!
+
 class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
   fixtures :all
 
   setup do
-    ENV['PLEXTUBE_VIDEO_DIR'] = '/mnt/lolvids'
     FileUtils.stubs(:mkdir_p)
     File.stubs(:delete)
+    File.stubs(:exists?).returns(true)
     Video.any_instance.stubs(:system)
-
+    Yt::Collections::Videos.any_instance.stubs(:first)
     Yt::Channel.any_instance.stubs(:videos).returns([])
     Yt::URL.stubs(:new).returns(stub(id: -1))
     Yt::Video.stubs(:new).returns(
@@ -25,6 +27,12 @@ class ActiveSupport::TestCase
         duration: 3342,
       )
     )
+  end
+
+  def set_setting(attrs)
+    s = Setting.instance
+    s.assign_attributes(attrs)
+    s.save(validate: false)
   end
 
   def create_subscription(attrs = {})
@@ -48,7 +56,6 @@ class ActiveSupport::TestCase
         title: "BEST VIDEO",
         video_id: SecureRandom.hex,
         thumbnail_url: "http://thumb.co/thumby2.png",
-        file_name: 'file.name',
         description: 'just a vid yo',
         duration: 10101,
         downloaded: false,
