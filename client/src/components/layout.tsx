@@ -1,15 +1,11 @@
 import {
-  Column,
-  Columns,
   Container,
   Content,
-  Delete,
   Navbar,
   NavbarBrand,
   NavbarItem,
   NavbarMenu,
-  NavbarStart,
-  Notification
+  NavbarStart
 } from "bloomer";
 
 import { FaBeer } from "react-icons/fa";
@@ -66,13 +62,6 @@ export default observer(props => {
           </NavbarStart>
         </NavbarMenu>
       </Navbar>
-
-      {store.ui.notification && (
-        <Notification isColor={store.ui.notificationType || "danger"}>
-          <Delete onClick={store.ui.clearNotification} />
-          {store.ui.notification}
-        </Notification>
-      )}
 
       {props.children}
 

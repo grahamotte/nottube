@@ -4,6 +4,9 @@ import Settings from "./pages/settings";
 import Subscriptions from "./pages/subscriptions";
 import { observer } from "mobx-react";
 import store from "./stores";
+import { toast } from "react-toastify";
+
+toast.configure();
 
 export default observer(props => {
   if (store.ui.page === "subscriptions") {
