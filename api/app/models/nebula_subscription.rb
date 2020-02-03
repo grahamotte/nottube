@@ -15,20 +15,10 @@
 #  keep_count       :integer          default(8), not null
 #
 
-class Subscription < ApplicationRecord
-  self.abstract_class = true
-
-  has_many :videos
-
-  def videos_to_keep
-    videos.first(keep_count)
+class NebulaSubscription < Subscription
+  def remote_videos
   end
 
   def refresh_metadata
-    raise 'implement me'
-  end
-
-  def remote_videos
-    raise 'implement me'
   end
 end
