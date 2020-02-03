@@ -40,6 +40,7 @@ class SubscriptionsController < ApplicationController
           s.attributes.merge(
             videos_downloaded: s.videos.count(&:downloaded?),
             videos_scheduled: s.videos.count(&:scheduled?),
+            friendly_name: s.friendly_name,
           )
         end
     )

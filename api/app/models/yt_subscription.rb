@@ -27,6 +27,10 @@ class YtSubscription < Subscription
     YT.configure { |c| c.api_key = Setting.instance.yt_api_key }
   end
 
+  def friendly_name
+    'YouTube'
+  end
+
   def remote_videos
     Yt::Channel.new(id: channel_id).videos
   end

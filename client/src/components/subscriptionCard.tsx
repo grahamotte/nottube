@@ -93,27 +93,36 @@ export default observer(
       const s = this.props.s;
 
       const nameAndThumb = (
-        <Media>
-          <MediaLeft>
-            <img
-              width="50px"
-              height="50px"
-              src={s.thumbnailUrl}
-              style={{ borderRadius: "50%" }}
-              alt="subscription thumbnail"
-            />
-          </MediaLeft>
-          <MediaContent>
-            <a href={s.url}>
-              <small>
-                <Title isSize={4}>{s.title}</Title>
-                <Subtitle>
-                  <i>{abreviateNumber(s.subscriberCount)} subs</i>
-                </Subtitle>
-              </small>
-            </a>
-          </MediaContent>
-        </Media>
+        <Columns>
+          <Column>
+            <Media>
+              <MediaLeft>
+                <img
+                  width="50px"
+                  height="50px"
+                  src={s.thumbnailUrl}
+                  style={{ borderRadius: "50%" }}
+                  alt="subscription thumbnail"
+                />
+              </MediaLeft>
+              <MediaContent>
+                <a href={s.url}>
+                  <small>
+                    <Title isSize={4}>{s.title}</Title>
+                    {s.subscriberCount && (
+                      <Subtitle>
+                        <i>{abreviateNumber(s.subscriberCount)} subs</i>
+                      </Subtitle>
+                    )}
+                  </small>
+                </a>
+              </MediaContent>
+            </Media>
+          </Column>
+          <Column hasTextAlign="right" isSize="1/4">
+            <small>{s.friendlyName}</small>
+          </Column>
+        </Columns>
       );
 
       const description = (

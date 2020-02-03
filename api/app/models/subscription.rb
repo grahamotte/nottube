@@ -23,6 +23,10 @@ class Subscription < ApplicationRecord
     videos.first(keep_count)
   end
 
+  def friendly_name
+    raise 'implement me'
+  end
+
   def refresh_metadata
     raise 'implement me'
   end

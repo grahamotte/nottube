@@ -21,6 +21,10 @@ class NebulaSubscription < Subscription
     Zype.configuration.api_key = Setting.instance.nebula_api_key
   end
 
+  def friendly_name
+    'Nebula'
+  end
+
   def refresh_metadata
     ias = JSON.parse(
       Nokogiri::HTML(
