@@ -1,6 +1,7 @@
 class SyncVideosJob < ApplicationJob
   def perform(subscription_id, look_back: 3)
     s = Subscription.find_by!(id: subscription_id)
+    s.configure_for_me
 
     # ensure everything marked as downloaded is actually downloaded
     s.videos.each { |v| v.update!(downloaded: false) unless v.file_exists? }

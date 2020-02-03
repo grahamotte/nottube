@@ -16,6 +16,10 @@
 #
 
 class NebulaSubscription < Subscription
+  def configure_for_me
+    Zype.configure { |c| c.api_key = Setting.instance.nebula_api_key }
+  end
+
   def remote_videos
   end
 

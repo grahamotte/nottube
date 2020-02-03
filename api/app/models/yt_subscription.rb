@@ -22,6 +22,10 @@ class YtSubscription < Subscription
     self.channel_id ||= Yt::URL.new(url).id
   end
 
+  def configure_for_me
+    YT.configure { |c| c.api_key = Setting.instance.yt_api_key }
+  end
+
   def remote_videos
     Yt::Channel.new(id: channel_id).videos
   end

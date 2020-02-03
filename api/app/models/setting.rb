@@ -2,46 +2,47 @@
 #
 # Table name: settings
 #
-#  id          :integer          not null, primary key
-#  yt_api_key  :string
-#  videos_path :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id             :integer          not null, primary key
+#  yt_api_key     :string
+#  videos_path    :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  nebula_api_key :string
 #
 
 class Setting < ApplicationRecord
   before_validation :configure_yt
 
-  validates :yt_api_key, presence: true
+  def self.instance
+    first_or_create
+  end
+
+  # videos
   validates :videos_path, presence: true
-
-  validate :validate_yt_api_key
   validate :validate_videos_path_presence
-
-  def self.configure_yt
-    instance.configure_yt
+  def validate_videos_path_presence
+    return unless videos_path.present?
+    return if Dir.exists?(videos_path)
+    errors.add(:base, 'videos directory does not exist')
   end
 
-  def configure_yt
-    return if yt_api_key.blank?
-    Yt.configure { |c| c.api_key = yt_api_key }
-  end
-
+  # Yt
+  validates :yt_api_key, presence: true, unless: -> { yt_api_key.nil? }
+  validate :validate_yt_api_key, unless: -> { yt_api_key.blank? }
   def validate_yt_api_key
-    return if yt_api_key.blank?
+    YtSubscription.new.configure_for_me
     Yt::Collections::Videos.new.first
   rescue Yt::Errors::RequestError
     errors.add(:base, 'youtube API key is not valid')
   end
 
-  def validate_videos_path_presence
-    return unless videos_path.present?
-    return if Dir.exists?(videos_path)
-
-    errors.add(:base, 'videos directory does not exist')
-  end
-
-  def self.instance
-    first_or_create
+  # Nebula
+  validates :nebula_api_key, presence: true, unless: -> { nebula_api_key.nil? }
+  validate :validate_nebula_api_key, unless: -> { nebula_api_key.blank? }
+  def validate_nebula_api_key
+    NebulaSubscription.new.configure_for_me
+    Zype::Videos.new.all
+  rescue Zype::Client::Unauthorized
+    errors.add(:base, 'nebula API key is not valid')
   end
 end

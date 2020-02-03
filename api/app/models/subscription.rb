@@ -31,4 +31,8 @@ class Subscription < ApplicationRecord
   def remote_videos
     raise 'implement me'
   end
+
+  def configure_for_me
+    raise 'implement me'
+  end
 end
