@@ -1,7 +1,6 @@
 class SubscriptionsController < ApplicationController
   def create
-    s = Subscription.create!(url: params.require(:url), keep_count: 2)
-    s.refresh_metadata
+    s = subscription_class.create!(url: url_param, keep_count: 2)
     SyncVideosJob.perform_later(s.id)
 
     head :ok
@@ -44,5 +43,20 @@ class SubscriptionsController < ApplicationController
           )
         end
     )
+  end
+
+  private
+
+  def url_param
+    params.require(:url)
+  end
+
+  def subscription_class
+    case URI(url_param).host
+    when 'youtube.com'
+      YtSubscription
+    when "watchnebula.com"
+      NebulaSubscription
+    end
   end
 end

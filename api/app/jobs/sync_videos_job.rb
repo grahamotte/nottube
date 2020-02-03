@@ -2,12 +2,13 @@ class SyncVideosJob < ApplicationJob
   def perform(subscription_id, look_back: 3)
     s = Subscription.find_by!(id: subscription_id)
     s.configure_for_me
+    s.refresh_metadata
 
     # ensure everything marked as downloaded is actually downloaded
     s.videos.each { |v| v.update!(downloaded: false) unless v.file_exists? }
 
-    # pull videos from YT and save their metadata
-    s.yt_videos.first(look_back).each do |v|
+    # pull videos and some of their metadata
+    s.remote_videos.first(look_back).each do |v|
       v = Video.find_or_create_by(video_id: v.id, subscription: s)
       v.refresh_metadata
       v.touch
