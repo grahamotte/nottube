@@ -32,6 +32,19 @@ const field = (label: string, key: any) => {
   );
 };
 
+const info = (label: string, key: any) => {
+  return (
+    <Columns className="is-flex is-vcentered">
+      <Column isSize="1/2" hasTextAlign="right">
+        <Label>{label}</Label>
+      </Column>
+      <Column isSize="1/2">
+        <pre>{store.settings.get(key)}</pre>
+      </Column>
+    </Columns>
+  );
+};
+
 export default observer(
   class Klass extends React.Component {
     constructor(props: any) {
@@ -44,8 +57,12 @@ export default observer(
       return (
         <Layout>
           {field("Videos Directory", "videos_path")}
+          <hr />
           {field("YouTube API Key", "yt_api_key")}
-          {field("Nebula API Key", "nebula_api_key")}
+          <hr />
+          {field("Nebula Email", "nebula_user")}
+          {field("Nebula Password", "nebula_pass")}
+          {info("Nebula Cache", "nebula_cache")}
           <Columns>
             <Column hasTextAlign="right">
               <LoadedButton
