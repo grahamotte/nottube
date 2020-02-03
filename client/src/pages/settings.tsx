@@ -43,8 +43,9 @@ export default observer(
     render() {
       return (
         <Layout>
-          {field("YouTube API Key", "yt_api_key")}
           {field("Videos Directory", "videos_path")}
+          {field("YouTube API Key", "yt_api_key")}
+          {field("Nebula API Key", "nebula_api_key")}
           <Columns>
             <Column hasTextAlign="right">
               <LoadedButton

@@ -3,7 +3,7 @@
 # Table name: subscriptions
 #
 #  id               :integer          not null, primary key
-#  channel_id       :string
+#  remote_id        :string
 #  url              :string           not null
 #  title            :string
 #  thumbnail_url    :string
@@ -13,11 +13,10 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  keep_count       :integer          default(8), not null
+#  type             :string
 #
 
 class Subscription < ApplicationRecord
-  self.abstract_class = true
-
   has_many :videos
 
   def videos_to_keep

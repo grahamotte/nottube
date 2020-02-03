@@ -11,8 +11,6 @@
 #
 
 class Setting < ApplicationRecord
-  before_validation :configure_yt
-
   def self.instance
     first_or_create
   end
@@ -27,20 +25,20 @@ class Setting < ApplicationRecord
   end
 
   # Yt
-  validates :yt_api_key, presence: true, unless: -> { yt_api_key.nil? }
+  validates :yt_api_key, presence: true, unless: -> { yt_api_key.presence.nil? }
   validate :validate_yt_api_key, unless: -> { yt_api_key.blank? }
   def validate_yt_api_key
-    YtSubscription.new.configure_for_me
+    Yt.configure { |c| c.api_key = yt_api_key }
     Yt::Collections::Videos.new.first
   rescue Yt::Errors::RequestError
     errors.add(:base, 'youtube API key is not valid')
   end
 
   # Nebula
-  validates :nebula_api_key, presence: true, unless: -> { nebula_api_key.nil? }
+  validates :nebula_api_key, presence: true, unless: -> { nebula_api_key.presence.nil? }
   validate :validate_nebula_api_key, unless: -> { nebula_api_key.blank? }
   def validate_nebula_api_key
-    NebulaSubscription.new.configure_for_me
+    Zype.configure { |c| c.api_key = nebula_api_key }
     Zype::Videos.new.all
   rescue Zype::Client::Unauthorized
     errors.add(:base, 'nebula API key is not valid')

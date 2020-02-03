@@ -5,7 +5,7 @@ class SettingsController < ApplicationController
 
   def update
     s = Setting.instance
-    s.assign_attributes(params.permit(:yt_api_key, :videos_path))
+    s.assign_attributes(params.permit(:yt_api_key, :videos_path, :nebula_api_key))
 
     if s.valid?
       s.save!
