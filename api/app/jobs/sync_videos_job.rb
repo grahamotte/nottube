@@ -8,8 +8,8 @@ class SyncVideosJob < ApplicationJob
     s.videos.each { |v| v.update!(downloaded: false) unless v.file_exists? }
 
     # pull videos and some of their metadata
-    s.remote_videos.first(look_back).each do |v|
-      v = Video.find_or_create_by(video_id: v.id, subscription: s)
+    s.remote_video_ids.first(look_back).each do |vid|
+      v = s.video_class.find_or_create_by(remote_id: vid, subscription: s)
       v.refresh_metadata
       v.touch
     end

@@ -31,11 +31,15 @@ class Subscription < ApplicationRecord
     raise 'implement me'
   end
 
-  def remote_videos
+  def remote_video_ids
     raise 'implement me'
   end
 
   def configure_for_me
+    raise 'implement me'
+  end
+
+  def video_class
     raise 'implement me'
   end
 end

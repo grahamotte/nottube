@@ -54,7 +54,7 @@ class ActiveSupport::TestCase
       attrs.reverse_merge(
         subscription: create_subscription,
         title: "BEST VIDEO",
-        video_id: SecureRandom.hex,
+        remote_id: SecureRandom.hex,
         thumbnail_url: "http://thumb.co/thumby2.png",
         description: 'just a vid yo',
         duration: 10101,

@@ -4,7 +4,7 @@
 #
 #  id              :integer          not null, primary key
 #  subscription_id :integer
-#  video_id        :string
+#  remote_id       :string
 #  published_at    :datetime
 #  title           :string
 #  thumbnail_url   :string
@@ -14,6 +14,7 @@
 #  downloaded      :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  type            :string           default("YtVideo")
 #
 
 require 'test_helper'
@@ -32,7 +33,7 @@ class VideoTest < ActiveSupport::TestCase
 
     set_setting(videos_path: '/test/')
     File.stubs(:exists?).with("/test/SUPER - BEST VIDEO - 1.mp4").returns(true)
-    assert_equal "/test/SUPER - BEST VIDEO - 1.mp4", create_video(video_id: 1).file_path
+    assert_equal "/test/SUPER - BEST VIDEO - 1.mp4", create_video(remote_id: 1).file_path
   end
 
   def test_download__not_scheduled
@@ -62,7 +63,7 @@ class VideoTest < ActiveSupport::TestCase
       .expects(:system)
       .with("youtube-dl abcd1234 -o \"#{Rails.root.join('videos', "SUPER - BEST VIDEO - abcd1234.mp4").to_s}\" --write-thumbnail")
 
-    v = create_video(downloaded: false, video_id: 'abcd1234')
+    v = create_video(downloaded: false, remote_id: 'abcd1234')
 
     assert_not_nil v.download!
 
@@ -77,7 +78,7 @@ class VideoTest < ActiveSupport::TestCase
     File.stubs(:exists?).returns(true)
     File.expects(:delete).with('/test/file.name')
 
-    v = create_video(file_path: '/test/file.name', downloaded: true, video_id: 'abcd1234')
+    v = create_video(file_path: '/test/file.name', downloaded: true, remote_id: 'abcd1234')
 
     v.remove!
 

@@ -31,8 +31,13 @@ class YtSubscription < Subscription
     'YouTube'
   end
 
-  def remote_videos
-    Yt::Channel.new(id: channel_id).videos
+  def video_class
+    YtVideo
+  end
+
+
+  def remote_video_ids
+    Yt::Channel.new(id: channel_id).videos.map(&:id)
   end
 
   def refresh_metadata

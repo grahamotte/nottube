@@ -18,11 +18,15 @@
 
 class NebulaSubscription < Subscription
   def configure_for_me
-    Zype.configuration.api_key = Setting.instance.nebula_api_key
+    Zype.configuration.api_key = Setting.instance.nebula_cache.dig('public', 'ZYPE_API_KEY')
   end
 
   def friendly_name
     'Nebula'
+  end
+
+  def video_class
+    NebulaVideo
   end
 
   def refresh_metadata
@@ -44,10 +48,10 @@ class NebulaSubscription < Subscription
       thumbnail_url: remote_detail.dig('avatar'),
       description: remote_detail.dig('bio'),
       video_count: z_playlist.dig('playlist_item_count'),
-    ).attributes
+    )
   end
 
-  def remote_videos
-    []
+  def remote_video_ids
+    Zype::Playlists.new.videos(id: remote_id).map { |v| v.dig('_id') }
   end
 end

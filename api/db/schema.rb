@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_03_205313) do
+ActiveRecord::Schema.define(version: 2020_02_04_002229) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2020_02_03_205313) do
 
   create_table "videos", force: :cascade do |t|
     t.integer "subscription_id"
-    t.string "video_id"
+    t.string "remote_id"
     t.datetime "published_at"
     t.string "title"
     t.string "thumbnail_url"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2020_02_03_205313) do
     t.boolean "downloaded", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type", default: "YtVideo"
   end
 
 end

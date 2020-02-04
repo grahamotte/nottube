@@ -1,5 +1,5 @@
 class DownloadVideoJob < ApplicationJob
-  def perform(video_id)
-    Video.find_by!(id: video_id).download!
+  def perform(remote_id)
+    Video.find_by!(id: remote_id).download!
   end
 end

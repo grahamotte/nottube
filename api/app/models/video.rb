@@ -4,7 +4,7 @@
 #
 #  id              :integer          not null, primary key
 #  subscription_id :integer
-#  video_id        :string
+#  remote_id       :string
 #  published_at    :datetime
 #  title           :string
 #  thumbnail_url   :string
@@ -14,6 +14,7 @@
 #  downloaded      :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  type            :string           default("YtVideo")
 #
 
 class Video < ApplicationRecord
@@ -22,16 +23,24 @@ class Video < ApplicationRecord
   default_scope { order('published_at desc') }
   scope :downloaded, -> { where(downloaded: true) }
 
+  def execute_download
+    raise 'implement me'
+  end
+
+  def refresh_metadata
+    raise 'implement me'
+  end
+
   def videos_dir
     Setting.instance.videos_path || Rails.root.join('videos').to_s
   end
 
   def derived_title
-    "#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{video_id || 'No Id'}"
+    "#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{remote_id || 'No Id'}"
   end
 
   def video_formats
-    ["mp4", 'mkv', 'avi']
+    ["mp4", 'mkv', 'avi', 'm4a']
   end
 
   def default_file_path
@@ -71,14 +80,7 @@ class Video < ApplicationRecord
 
     FileUtils.mkdir_p(videos_dir)
 
-    system(
-      [
-        "youtube-dl",
-        video_id,
-        "-o \"#{default_file_path}\"",
-        "--write-thumbnail"
-      ].join(' ')
-    )
+    execute_download
 
     update!(file_path: file_path, downloaded: true) if file_exists?
   end
@@ -86,21 +88,5 @@ class Video < ApplicationRecord
   def remove!
     File.delete(file_path) if file_exists?
     update!(downloaded: false, file_path: nil)
-  end
-
-  def yt_video
-    @yt_video ||= Yt::Video.new(id: video_id)
-  end
-
-  def refresh_metadata(vid = nil)
-    @yt_video = vid if vid
-
-    update!(
-      published_at: yt_video.published_at,
-      title: yt_video.title,
-      thumbnail_url: yt_video.thumbnail_url(:high),
-      description: yt_video.description,
-      duration: yt_video.duration,
-    )
   end
 end

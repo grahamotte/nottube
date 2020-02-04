@@ -3,7 +3,7 @@ import { action, computed, observable } from "mobx";
 export default class Video {
   @observable id: number = 0;
   @observable subscriptionId: number = 0;
-  @observable videoId: string = "";
+  @observable remoteId: string = "";
   @observable title: string = "";
   @observable thumbnailUrl: string = "";
   @observable descriptionText: string = "";
@@ -17,7 +17,7 @@ export default class Video {
   constructor(params: any) {
     this.id = params.id;
     this.subscriptionId = params.subscription_id;
-    this.videoId = params.video_id;
+    this.remoteId = params.remote_id;
     this.publishedAt = params.published_at;
     this.title = params.title;
     this.thumbnailUrl = params.thumbnail_url;

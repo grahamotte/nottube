@@ -7,9 +7,9 @@ class VideosControllerTest < ActionController::TestCase
     time = Time.at(123111231)
 
     s = create_subscription(keep_count: 1)
-    a = create_video(video_id: 'a1', subscription: s, published_at: time - 1.day, file_path: 'file/path.mkv')
-    b = create_video(video_id: 'a2', subscription: s, published_at: time - 2.day, file_path: 'file/path.mkv')
-    c = create_video(video_id: 'a3', subscription: s, published_at: time - 3.day, file_path: 'file/path.mkv')
+    a = create_video(remote_id: 'a1', subscription: s, published_at: time - 1.day, file_path: 'file/path.mkv')
+    b = create_video(remote_id: 'a2', subscription: s, published_at: time - 2.day, file_path: 'file/path.mkv')
+    c = create_video(remote_id: 'a3', subscription: s, published_at: time - 3.day, file_path: 'file/path.mkv')
 
     Video.any_instance.stubs(:created_at).returns(time)
     Video.any_instance.stubs(:updated_at).returns(time)
@@ -20,7 +20,7 @@ class VideosControllerTest < ActionController::TestCase
       {
         'id' => a.id,
         'subscription_id' => s.id,
-        'video_id' => 'a1',
+        'remote_id' => 'a1',
         'published_at' => '1973-11-24T21:33:51.000Z',
         'title' => 'BEST VIDEO',
         'thumbnail_url' => 'http://thumb.co/thumby2.png',
@@ -34,7 +34,7 @@ class VideosControllerTest < ActionController::TestCase
       {
         'id' => b.id,
         'subscription_id' => s.id,
-        'video_id' => 'a2',
+        'remote_id' => 'a2',
         'published_at' => '1973-11-23T21:33:51.000Z',
         'title' => 'BEST VIDEO',
         'thumbnail_url' => 'http://thumb.co/thumby2.png',
@@ -48,7 +48,7 @@ class VideosControllerTest < ActionController::TestCase
       {
         'id' => c.id,
         'subscription_id' => s.id,
-        'video_id' => 'a3',
+        'remote_id' => 'a3',
         'published_at' => '1973-11-22T21:33:51.000Z',
         'title' => 'BEST VIDEO',
         'thumbnail_url' => 'http://thumb.co/thumby2.png',
@@ -71,7 +71,7 @@ class VideosControllerTest < ActionController::TestCase
   def assert_serialized_videos_equal(e, a)
     assert_equal e.dig('id'), a.dig('id')
     assert_equal e.dig('subscription_id'), a.dig('subscription_id')
-    assert_equal e.dig('video_id'), a.dig('video_id')
+    assert_equal e.dig('remote_id'), a.dig('remote_id')
     assert_equal e.dig('title'), a.dig('title')
     assert_equal e.dig('thumbnail_url'), a.dig('thumbnail_url')
     assert_equal e.dig('file_path'), a.dig('file_path')

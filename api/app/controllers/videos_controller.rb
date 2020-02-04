@@ -7,7 +7,7 @@ class VideosController < ApplicationController
           {
             id: v.id,
             subscription_id: v.subscription_id,
-            video_id: v.video_id,
+            remote_id: v.remote_id,
             title: v.title,
             thumbnail_url: v.thumbnail_url,
             file_path: v.file_path,
@@ -15,7 +15,7 @@ class VideosController < ApplicationController
             duration: v.duration,
             downloaded: v.downloaded,
             scheduled: v.scheduled?,
-            published_at: v.published_at.in_time_zone('UTC').iso8601,
+            published_at: v.published_at&.in_time_zone('UTC')&.iso8601,
             created_at: v.created_at.in_time_zone('UTC').iso8601,
             updated_at: v.updated_at.in_time_zone('UTC').iso8601,
           }

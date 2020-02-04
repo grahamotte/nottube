@@ -37,6 +37,7 @@ class Setting < ApplicationRecord
   end
 
   # Nebula
+  serialize :nebula_cache, JSON
   validates :nebula_user, presence: true, unless: -> { nebula_user.presence.nil? && nebula_pass.presence.nil? }
   validates :nebula_pass, presence: true, unless: -> { nebula_user.presence.nil? && nebula_pass.presence.nil? }
   validate :validate_nebula_creds, unless: -> { nebula_user.blank? && nebula_pass.blank? }
