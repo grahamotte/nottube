@@ -17,14 +17,14 @@
 #
 
 class YtSubscription < Subscription
-  validates :channel_id, uniqueness: true
+  validates :remote_id, uniqueness: true
 
   before_validation do
-    self.channel_id ||= Yt::URL.new(url).id
+    self.remote_id ||= Yt::URL.new(url).id
   end
 
   def configure_for_me
-    YT.configure { |c| c.api_key = Setting.instance.yt_api_key }
+    Yt.configure { |c| c.api_key = Setting.instance.yt_api_key }
   end
 
   def friendly_name
@@ -37,11 +37,13 @@ class YtSubscription < Subscription
 
 
   def remote_video_ids
-    Yt::Channel.new(id: channel_id).videos.map(&:id)
+    Yt::Channel.new(id: remote_id).videos.map(&:id)
   end
 
   def refresh_metadata
-    update!(channel_id: Yt::URL.new(url).id) if channel_id.blank?
+    yt_channel = Yt::Channel.new(id: remote_id)
+
+    update!(remote_id: Yt::URL.new(url).id) if remote_id.blank?
 
     update!(
       title: yt_channel.title || yt_channel.content_owner,

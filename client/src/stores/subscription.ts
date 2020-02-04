@@ -7,7 +7,7 @@ import store from "./index";
 
 export default class Subscription {
   @observable id: number = 0;
-  @observable channelId: string = "";
+  @observable remoteId: string = "";
   @observable url: string = "";
   @observable title: string = "";
   @observable thumbnailUrl: string = "";
@@ -24,7 +24,7 @@ export default class Subscription {
 
   constructor(params: any) {
     this.id = params.id;
-    this.channelId = params.channel_id;
+    this.remoteId = params.remote_id;
     this.url = params.url;
     this.title = params.title;
     this.thumbnailUrl = params.thumbnail_url;

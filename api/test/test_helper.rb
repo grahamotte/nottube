@@ -39,7 +39,7 @@ class ActiveSupport::TestCase
     Subscription.create!(
       attrs.reverse_merge(
         url: "http://goog.co/#{SecureRandom.hex}",
-        channel_id: SecureRandom.hex,
+        remote_id: SecureRandom.hex,
         title: "SUPER",
         video_count: 123,
         thumbnail_url: "http://thumb.co/thumby.png",
