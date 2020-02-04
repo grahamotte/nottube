@@ -62,7 +62,7 @@ export default observer(
       } else if (v.scheduled) {
         downloadTag = <Tag isColor="info">Scheduled for download</Tag>;
       } else {
-        downloadTag = <Tag isColor="warning">Not downloaded</Tag>;
+        downloadTag = undefined;
       }
 
       return (
