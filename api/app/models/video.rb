@@ -43,8 +43,8 @@ class Video < ApplicationRecord
     ["mp4", 'mkv', 'avi', 'm4a']
   end
 
-  def default_file_path
-    File.join(videos_dir, "#{derived_title}.#{video_formats.first}")
+  def default_file_path(fmt = nil)
+    File.join(videos_dir, "#{derived_title}.#{fmt || video_formats.first}")
   end
 
   def possible_file_paths

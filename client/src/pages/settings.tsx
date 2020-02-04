@@ -39,7 +39,7 @@ const info = (label: string, key: any) => {
         <Label>{label}</Label>
       </Column>
       <Column isSize="1/2">
-        <pre>{store.settings.get(key)}</pre>
+        <pre>{JSON.stringify(store.settings.get(key))}</pre>
       </Column>
     </Columns>
   );

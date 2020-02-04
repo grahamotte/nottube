@@ -19,15 +19,27 @@
 
 class NebulaVideo < Video
   def execute_download
-    # JSON.parse(
-    #   RestClient.get(
-    #     'https://player.zype.com/embed/5e33f8661c998a003.json',
-    #     params: {
-    #       access_token: '6da7f88217459ec312f7450f9a26c6d89b2751d7d84b9d5cf1105',
-    #       download: true,
-    #     }
-    #   ).body
-    # )
+    vid = JSON.parse(
+      RestClient.get(
+        "https://player.zype.com/embed/#{remote_id}.json",
+        params: {
+          access_token: Setting.instance.nebula_cache.dig('user', 'zype_auth_info', 'access_token'),
+          download: true,
+        }
+      ).body
+    )
+
+    url = vid.dig('response', 'body', 'files').last.dig('url')
+    type = vid.dig('response', 'body', 'files').last.dig('type')
+
+    system(
+      [
+        'curl',
+        "\"#{url}\"",
+        '--output',
+        "\"#{default_file_path(type)}\""
+      ].join(' ')
+    )
   end
 
   def refresh_metadata

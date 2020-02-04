@@ -16,10 +16,11 @@ export default class Subscription {
   @observable updatedAt: string = "";
   @observable subscriberCount: number = 0;
   @observable videos: Video[] = [];
+  @observable videosKnown: number = 0;
   @observable videosDownloaded: number = 0;
   @observable videosScheduled: number = 0;
   @observable keepCount: number = 0;
-  @observable friendlyName: boolean = false;
+  @observable source: boolean = false;
 
   constructor(params: any) {
     this.id = params.id;
@@ -31,10 +32,11 @@ export default class Subscription {
     this.videoCount = params.video_count;
     this.updatedAt = params.updated_at;
     this.subscriberCount = params.subscriber_count;
+    this.videosKnown = params.videos_known;
     this.videosDownloaded = params.videos_downloaded;
     this.videosScheduled = params.videos_scheduled;
     this.keepCount = params.keep_count;
-    this.friendlyName = params.friendly_name;
+    this.source = params.source;
   }
 
   @computed

@@ -38,9 +38,10 @@ class SubscriptionsController < ApplicationController
         .reverse
         .map do |s|
           s.attributes.merge(
+            videos_known: s.videos.count,
             videos_downloaded: s.videos.count(&:downloaded?),
             videos_scheduled: s.videos.count(&:scheduled?),
-            friendly_name: s.friendly_name,
+            source: s.friendly_name,
           )
         end
     )

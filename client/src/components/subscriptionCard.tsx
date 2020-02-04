@@ -67,10 +67,10 @@ export default observer(
 
       return (
         <Columns>
-          <Column isSize="narrow">
-            <img width="250px" src={v.thumbnailUrl} alt="video thumbnail" />
+          <Column isSize="1/4">
+            <img width="100%" src={v.thumbnailUrl} alt="video thumbnail" />
           </Column>
-          <Column isSize="narrow">
+          <Column isSize="1/4">
             <DatapairGroup
               pairs={{
                 Duration: `${(v.duration / 60).toFixed(2)} min`,
@@ -79,7 +79,7 @@ export default observer(
             />
             {downloadTag}
           </Column>
-          <Column>
+          <Column isSize="1/2">
             <b>{v.title}</b>
             <p>
               <small>{v.description}</small>
@@ -93,36 +93,29 @@ export default observer(
       const s = this.props.s;
 
       const nameAndThumb = (
-        <Columns>
-          <Column>
-            <Media>
-              <MediaLeft>
-                <img
-                  width="50px"
-                  height="50px"
-                  src={s.thumbnailUrl}
-                  style={{ borderRadius: "50%" }}
-                  alt="subscription thumbnail"
-                />
-              </MediaLeft>
-              <MediaContent>
-                <a href={s.url}>
-                  <small>
-                    <Title isSize={4}>{s.title}</Title>
-                    {s.subscriberCount && (
-                      <Subtitle>
-                        <i>{abreviateNumber(s.subscriberCount)} subs</i>
-                      </Subtitle>
-                    )}
-                  </small>
-                </a>
-              </MediaContent>
-            </Media>
-          </Column>
-          <Column hasTextAlign="right" isSize="1/4">
-            <small>{s.friendlyName}</small>
-          </Column>
-        </Columns>
+        <Media>
+          <MediaLeft>
+            <img
+              width="50px"
+              height="50px"
+              src={s.thumbnailUrl}
+              style={{ borderRadius: "50%" }}
+              alt="subscription thumbnail"
+            />
+          </MediaLeft>
+          <MediaContent>
+            <a href={s.url}>
+              <small>
+                <Title isSize={4}>{s.title}</Title>
+                {s.subscriberCount && (
+                  <Subtitle>
+                    <i>{abreviateNumber(s.subscriberCount)} subs</i>
+                  </Subtitle>
+                )}
+              </small>
+            </a>
+          </MediaContent>
+        </Media>
       );
 
       const description = (
@@ -136,15 +129,16 @@ export default observer(
           <Column>
             <DatapairGroup
               pairs={{
-                Videos: s.videoCount,
-                Updated: format(s.updatedAt)
+                Source: s.source,
+                "Last Updated": format(s.updatedAt)
               }}
             />
           </Column>
           <Column>
             <DatapairGroup
               pairs={{
-                Downloaded: `${s.videosDownloaded} / ${s.keepCount}`
+                Videos: `${s.videosKnown} seen of ${s.videoCount} total`,
+                Downloads: `${s.videosDownloaded} ready of ${s.keepCount} scheduled`
               }}
             />
           </Column>

@@ -18,7 +18,15 @@
 
 class NebulaSubscription < Subscription
   def configure_for_me
-    Zype.configuration.api_key = Setting.instance.nebula_cache.dig('public', 'ZYPE_API_KEY')
+    cached = Setting.instance.nebula_cache || {}
+    login_expires_at = Time.at(cached.dig('user', 'zype_auth_info', 'expires_at') || 0) - 1.hour
+
+    if Time.now > login_expires_at
+      Setting.instance.reset_nebula_cache!
+      cached = Setting.instance.nebula_cache || {}
+    end
+
+    Zype.configuration.api_key = cached.dig('public', 'ZYPE_API_KEY')
   end
 
   def friendly_name
@@ -52,6 +60,17 @@ class NebulaSubscription < Subscription
   end
 
   def remote_video_ids
-    Zype::Playlists.new.videos(id: remote_id).map { |v| v.dig('_id') }
+    params = {
+      "playlist_id.inclusive" => remote_id,
+      api_key: Setting.instance.nebula_cache.dig('public', 'ZYPE_API_KEY'),
+      per_page: 100,
+      sort: 'published_at',
+      order: 'desc'
+    }
+
+    RestClient.get('https://api.zype.com/videos', params: params)
+      .then { |x| JSON.parse(x.body) }
+      .dig('response')
+      .map { |v| v.dig('_id') }
   end
 end

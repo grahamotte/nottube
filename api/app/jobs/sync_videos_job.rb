@@ -1,5 +1,5 @@
 class SyncVideosJob < ApplicationJob
-  def perform(subscription_id, look_back: 3)
+  def perform(subscription_id, look_back: 8)
     s = Subscription.find_by!(id: subscription_id)
     s.configure_for_me
     s.refresh_metadata
