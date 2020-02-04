@@ -1,4 +1,4 @@
-class SyncVideosJob < ApplicationJob
+class SyncJob < ApplicationJob
   def perform(subscription_id, look_back: 8)
     s = Subscription.find_by!(id: subscription_id)
     s.configure_for_me

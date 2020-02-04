@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SyncVideosJobTest < ActiveSupport::TestCase
+class SyncJobTest < ActiveSupport::TestCase
   def test_perform__finds_or_creates_videos
     Subscription.any_instance.expects(:yt_videos).returns(
       [
@@ -11,7 +11,7 @@ class SyncVideosJobTest < ActiveSupport::TestCase
     )
 
     assert_difference 'Video.count', 3 do
-      SyncVideosJob.perform_now(create_subscription.id)
+      SyncJob.perform_now(create_subscription.id)
     end
   end
 
@@ -25,7 +25,7 @@ class SyncVideosJobTest < ActiveSupport::TestCase
     Video.any_instance.stubs(:file_exists?).returns(:true)
     DownloadVideoJob.expects(:perform_later).twice
 
-    SyncVideosJob.perform_now(s.id)
+    SyncJob.perform_now(s.id)
   end
 
   def test_perform__removes_not_marked_to_keep
@@ -37,6 +37,6 @@ class SyncVideosJobTest < ActiveSupport::TestCase
 
     Video.any_instance.expects(:remove!).twice
 
-    SyncVideosJob.perform_now(s.id)
+    SyncJob.perform_now(s.id)
   end
 end

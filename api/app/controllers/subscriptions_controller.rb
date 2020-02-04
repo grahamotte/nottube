@@ -1,13 +1,13 @@
 class SubscriptionsController < ApplicationController
   def create
     s = subscription_class.create!(url: url_param, keep_count: 2)
-    SyncVideosJob.perform_later(s.id)
+    SyncJob.perform_later(s.id)
 
     head :ok
   end
 
   def sync
-    SyncVideosJob.perform_later(
+    SyncJob.perform_later(
       Subscription.find_by!(id: params.require(:id)).id
     )
 
