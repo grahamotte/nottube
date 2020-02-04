@@ -40,11 +40,11 @@ class Video < ApplicationRecord
   end
 
   def video_formats
-    ["mp4", 'mkv', 'avi', 'm4a']
+    ["mp4", 'mkv', 'avi', 'm4a', 'webm']
   end
 
   def default_file_path(fmt = nil)
-    File.join(videos_dir, "#{derived_title}.#{fmt || video_formats.first}")
+    File.join(videos_dir, [derived_title, fmt].compact.join('.'))
   end
 
   def possible_file_paths
@@ -75,8 +75,12 @@ class Video < ApplicationRecord
   end
 
   def download!
-    return false if downloaded?
-    return false unless scheduled?
+    if downloaded?
+      raise 'already downloaded'
+    end
+    unless scheduled?
+      raise 'not scheduled'
+    end
 
     FileUtils.mkdir_p(videos_dir)
 
