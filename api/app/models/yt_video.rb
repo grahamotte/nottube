@@ -20,9 +20,9 @@
 class YtVideo < Video
   def execute_download
     system(
-        [
+      [
         "youtube-dl",
-        remote_id,
+        "ytsearch:#{remote_id}",
         "-o \"#{default_file_path(nil)}.%(ext)s\"",
         "--write-thumbnail",
       ].join(' ')

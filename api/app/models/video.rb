@@ -75,12 +75,8 @@ class Video < ApplicationRecord
   end
 
   def download!
-    if downloaded?
-      raise 'already downloaded'
-    end
-    unless scheduled?
-      raise 'not scheduled'
-    end
+    return false if downloaded?
+    return false unless scheduled?
 
     FileUtils.mkdir_p(videos_dir)
 

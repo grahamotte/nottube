@@ -23,7 +23,7 @@ class NebulaVideo < Video
       RestClient.get(
         "https://player.zype.com/embed/#{remote_id}.json",
         params: {
-          access_token: Setting.instance.nebula_cache.dig('user', 'zype_auth_info', 'access_token'),
+          access_token: Setting.instance.nebula_tokens.dig('user', 'zype_auth_info', 'access_token'),
           download: true,
         }
       ).body
