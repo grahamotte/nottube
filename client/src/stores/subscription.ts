@@ -23,6 +23,10 @@ export default class Subscription {
   @observable source: boolean = false;
 
   constructor(params: any) {
+    this.setParams(params);
+  }
+
+  @action setParams = (params: any) => {
     this.id = params.id;
     this.remoteId = params.remote_id;
     this.url = params.url;
@@ -37,7 +41,7 @@ export default class Subscription {
     this.videosScheduled = params.videos_scheduled;
     this.keepCount = params.keep_count;
     this.source = params.source;
-  }
+  };
 
   @computed
   get description() {

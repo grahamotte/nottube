@@ -1,4 +1,4 @@
-import { action, computed, observable } from "mobx";
+import { computed, observable } from "mobx";
 
 export default class Video {
   @observable id: number = 0;

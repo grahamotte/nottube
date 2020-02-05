@@ -1,7 +1,14 @@
+import {
+  ActionCableConsumer,
+  ActionCableProvider
+} from "react-actioncable-provider";
+
+import ActionCable from "actioncable";
 import Queue from "./pages/queue";
 import React from "react";
 import Settings from "./pages/settings";
 import Subscriptions from "./pages/subscriptions";
+import { cableHost } from "./utils/apiHost";
 import { observer } from "mobx-react";
 import store from "./stores";
 import { toast } from "react-toastify";
@@ -9,15 +16,18 @@ import { toast } from "react-toastify";
 toast.configure();
 
 export default observer(props => {
-  if (store.ui.page === "subscriptions") {
-    return <Subscriptions />;
-  }
+  return (
+    <div>
+      <ActionCableProvider cable={ActionCable.createConsumer(cableHost)}>
+        <ActionCableConsumer
+          channel="SubscriptionsChannel"
+          onReceived={store.subscriptions.update}
+        ></ActionCableConsumer>
 
-  if (store.ui.page === "queue") {
-    return <Queue />;
-  }
-
-  if (store.ui.page === "settings") {
-    return <Settings />;
-  }
+        {store.ui.page === "subscriptions" && <Subscriptions />}
+        {store.ui.page === "queue" && <Queue />}
+        {store.ui.page === "settings" && <Settings />}
+      </ActionCableProvider>
+    </div>
+  );
 });

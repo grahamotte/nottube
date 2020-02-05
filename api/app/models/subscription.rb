@@ -19,6 +19,19 @@
 class Subscription < ApplicationRecord
   has_many :videos
 
+  after_save do
+    ActionCable.server.broadcast('subscriptions', serialize)
+  end
+
+  def serialize
+    attributes.merge(
+      videos_known: videos.count,
+      videos_downloaded: videos.count(&:downloaded?),
+      videos_scheduled: videos.count(&:scheduled?),
+      source: friendly_name,
+    )
+  end
+
   def videos_to_keep
     videos.first(keep_count)
   end

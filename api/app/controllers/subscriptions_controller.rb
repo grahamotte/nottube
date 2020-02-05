@@ -35,21 +35,12 @@ class SubscriptionsController < ApplicationController
   end
 
   def index
-    render json: (
-      Subscription
-        .all
-        .includes(:videos)
-        .sort_by(&:updated_at)
-        .reverse
-        .map do |s|
-          s.attributes.merge(
-            videos_known: s.videos.count,
-            videos_downloaded: s.videos.count(&:downloaded?),
-            videos_scheduled: s.videos.count(&:scheduled?),
-            source: s.friendly_name,
-          )
-        end
-    )
+    render json: Subscription
+      .all
+      .includes(:videos)
+      .sort_by(&:updated_at)
+      .reverse
+      .map(&:serialize)
   end
 
   private
