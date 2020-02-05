@@ -23,6 +23,7 @@ task :start do
         #{eval_rbenv}; \
         cd #{current_path}; \
         export REACT_APP_API_BASE=http://#{host}; \
+        export ENABLE_CLOCK=1; \
         foreman start \
       '
     BASH
