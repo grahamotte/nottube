@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_04_002229) do
+ActiveRecord::Schema.define(version: 2020_02_05_033309) do
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
@@ -28,13 +28,15 @@ ActiveRecord::Schema.define(version: 2020_02_04_002229) do
   end
 
   create_table "settings", force: :cascade do |t|
-    t.string "yt_api_key"
+    t.string "yt_api_key_a"
     t.string "videos_path"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "nebula_user"
     t.string "nebula_pass"
     t.text "nebula_cache"
+    t.string "yt_api_key_b"
+    t.string "yt_api_key_c"
   end
 
   create_table "subscriptions", force: :cascade do |t|

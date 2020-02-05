@@ -24,7 +24,7 @@ class YtSubscription < Subscription
   end
 
   def configure_for_me
-    Yt.configure { |c| c.api_key = Setting.instance.yt_api_key }
+    Yt.configure { |c| c.api_key = Setting.instance.yt_api_keys.sample }
   end
 
   def friendly_name

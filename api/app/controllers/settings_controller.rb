@@ -8,7 +8,9 @@ class SettingsController < ApplicationController
       :nebula_pass,
       :nebula_user,
       :videos_path,
-      :yt_api_key,
+      :yt_api_key_a,
+      :yt_api_key_b,
+      :yt_api_key_c,
     )
 
     s = Setting.instance

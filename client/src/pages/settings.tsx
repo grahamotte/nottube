@@ -58,7 +58,9 @@ export default observer(
         <Layout>
           {field("Videos Directory", "videos_path")}
           <hr />
-          {field("YouTube API Key", "yt_api_key")}
+          {field("YouTube API Key A", "yt_api_key_a")}
+          {field("YouTube API Key B", "yt_api_key_b")}
+          {field("YouTube API Key C", "yt_api_key_c")}
           <hr />
           {field("Nebula Email", "nebula_user")}
           {field("Nebula Password", "nebula_pass")}
