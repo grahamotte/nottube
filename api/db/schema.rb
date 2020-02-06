@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2020_02_05_033309) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
@@ -49,8 +52,8 @@ ActiveRecord::Schema.define(version: 2020_02_05_033309) do
     t.integer "subscriber_count"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "keep_count", default: 8, null: false
-    t.string "type"
+    t.integer "keep_count", default: 2, null: false
+    t.string "type", default: "YtSubscription"
   end
 
   create_table "videos", force: :cascade do |t|
