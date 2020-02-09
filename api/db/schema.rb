@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_05_033309) do
+ActiveRecord::Schema.define(version: 2020_02_06_055101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(version: 2020_02_05_033309) do
 
   create_table "settings", force: :cascade do |t|
     t.string "yt_api_key_a"
-    t.string "videos_path"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "nebula_user"

@@ -1,0 +1,9 @@
+**/.DS_Store
+.git/
+.gitignore
+client/node_modules
+api/vendor/cache
+api/tmp
+api/log
+.github
+data

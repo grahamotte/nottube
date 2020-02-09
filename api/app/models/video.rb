@@ -32,7 +32,7 @@ class Video < ApplicationRecord
   end
 
   def videos_dir
-    Setting.instance.videos_path || Rails.root.join('videos').to_s
+    '/opt/videos'
   end
 
   def derived_title
@@ -77,8 +77,6 @@ class Video < ApplicationRecord
   def download!
     return false if downloaded?
     return false unless scheduled?
-
-    FileUtils.mkdir_p(videos_dir)
 
     execute_download
 

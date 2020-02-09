@@ -19,16 +19,6 @@ class Setting < ApplicationRecord
     first_or_create
   end
 
-  # videos
-  validates :videos_path, presence: true
-  validate :validate_videos_path_presence
-
-  def validate_videos_path_presence
-    return unless videos_path.present?
-    return if Dir.exists?(videos_path)
-    errors.add(:base, 'videos directory does not exist')
-  end
-
   # Yt
   def yt_api_keys
     [yt_api_key_a, yt_api_key_b, yt_api_key_c].compact
@@ -70,6 +60,13 @@ class Setting < ApplicationRecord
     login = JSON.parse(RestClient.post(
         'https://api.watchnebula.com/api/v1/auth/login/',
         { email: nebula_user, password: nebula_pass }.to_json,
+        headers: {
+          Origin: 'https://watchnebula.com',
+          Host: 'api.watchnebula.com',
+          Referer: 'https://watchnebula.com/login',
+          'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:72.0) Gecko/20100101 Firefox/72.0',
+          Pragma: 'no-cache',
+        },
         content_type: :json,
         accept: :json,
       ).body
@@ -97,7 +94,7 @@ class Setting < ApplicationRecord
   def validate_nebula_creds
     raise unless nebula_tokens.fetch('public').fetch('ZYPE_API_KEY').present?
     raise unless nebula_tokens.fetch('user').fetch('zype_auth_info').fetch('access_token').present?
-  rescue StandardError => e
-    errors.add(:base, 'nebula API key is not valid')
+  # rescue StandardError => e
+  #   errors.add(:base, 'nebula API key is not valid')
   end
 end

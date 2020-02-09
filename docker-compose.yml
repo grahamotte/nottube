@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ${DATA_DIR}/db:/var/lib/postgresql/data
+  redis:
+    image: redis
+  web:
+    build: .
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - ${DATA_DIR}/videos:/opt/videos
+    environment:
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-F13018254F68C0940C69173F620F0056}
+      - RAILS_ENV=${RAILS_ENV:-production}
+      - ENABLE_CLOCK=${ENABLE_CLOCK:-1}
+      - REACT_APP_API_HOST=${API_HOST}:3000
+    ports:
+      - "3030:3030"
+      - "3000:3000"
+    command: |
+      bash -c '
+        set -ex
+        cd /opt/api
+        bundle exec rake db:create
+        bundle exec rake db:migrate
+        cd /opt
+        mkdir -p videos
+        foreman start
+      '

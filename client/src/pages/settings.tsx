@@ -56,8 +56,6 @@ export default observer(
     render() {
       return (
         <Layout>
-          {field("Videos Directory", "videos_path")}
-          <hr />
           {field("YouTube API Key A", "yt_api_key_a")}
           {field("YouTube API Key B", "yt_api_key_b")}
           {field("YouTube API Key C", "yt_api_key_c")}
@@ -74,6 +72,7 @@ export default observer(
                 url={`${host}/settings`}
                 data={store.settings.attrs}
                 then={() => {
+                  store.settings.refresh();
                   store.ui.successNotification("Updated settings!");
                 }}
               />
