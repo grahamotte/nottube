@@ -59,10 +59,8 @@ WORKDIR /opt/client
 RUN npm install
 
 # app files
+COPY Procfile /opt/Procfile
 COPY api /opt/api
 RUN true
 COPY client /opt/client
 RUN true
-COPY Gemfile /opt/Gemfile
-RUN true
-COPY Procfile /opt/Procfile

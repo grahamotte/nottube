@@ -4,7 +4,7 @@ require './config/boot'
 require './config/environment'
 
 module Clockwork
-  if ENV['ENABLE_CLOCK']
+  if ENV['ENABLE_CLOCK'].present?
     every(6.hour, 'sync_most_recent_videos') { SyncMostRecentVideosJob.perform_later }
   end
 end

@@ -4,6 +4,7 @@ set -e
 
 export API_HOST=192.168.1.201
 export DATA_DIR=/mnt/collection/pt
+export ENABLE_CLOCK=1
 
 docker-compose -H "ssh://me@192.168.1.201" down
 docker-compose -H "ssh://me@192.168.1.201" up --build -d

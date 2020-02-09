@@ -17,7 +17,7 @@ services:
     environment:
       - SECRET_KEY_BASE=${SECRET_KEY_BASE:-F13018254F68C0940C69173F620F0056}
       - RAILS_ENV=${RAILS_ENV:-production}
-      - ENABLE_CLOCK=${ENABLE_CLOCK:-1}
+      - ENABLE_CLOCK=${ENABLE_CLOCK:-}
       - REACT_APP_API_HOST=${API_HOST}:3000
     ports:
       - "3030:3030"
