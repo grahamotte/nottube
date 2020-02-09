@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+set -e
+
+ACTION=$1
+ENV=$2
+
+if [[ $ACTION == 'deploy' ]]; then
+  if [[ $ENV == 'dev' ]]; then
+    foreman start
+  fi
+
+  if [[ $ENV == 'stage' ]]; then
+    export API_HOST=192.168.1.201
+    export DATA_DIR=/mnt/collection/pt_stage
+    docker-compose -H "ssh://me@$API_HOST" down
+    docker-compose -H "ssh://me@$API_HOST" up --build
+  fi
+
+  if [[ $ENV == 'prod' ]]; then
+    export API_HOST=192.168.1.201
+    export DATA_DIR=/mnt/collection/pt
+    export ENABLE_CLOCK=1
+    docker-compose -H "ssh://me@$API_HOST" down
+    docker-compose -H "ssh://me@$API_HOST" up --build --detach
+  fi
+fi
+
+if [[ $ACTION == 'console' ]]; then
+  if [[ $ENV == 'dev' ]]; then
+    cd api
+    rails c
+  fi
+
+  if [[ $ENV == 'stage' ]]; then
+    export API_HOST=192.168.1.201
+    export DATA_DIR=/mnt/collection/pt_stage
+    docker-compose -H "ssh://me@$API_HOST" run web bash -c "cd /opt/api && rails c"
+  fi
+
+  if [[ $ENV == 'prod' ]]; then
+    export API_HOST=192.168.1.201
+    export DATA_DIR=/mnt/collection/pt
+    docker-compose -H "ssh://me@$API_HOST" run web bash -c "cd /opt/api && rails c"
+  fi
+fi
+
+if [[ $ACTION == 'log' ]]; then
+  if [[ $ENV == 'dev' ]]; then
+    tail -f api/log/development.log
+  fi
+
+  if [[ $ENV == 'stage' ]]; then
+    export API_HOST=192.168.1.201
+    export DATA_DIR=/mnt/collection/pt_stage
+    docker-compose -H "ssh://me@$API_HOST" run web tail -f /opt/api/log/production.log
+  fi
+
+  if [[ $ENV == 'prod' ]]; then
+    export API_HOST=192.168.1.201
+    export DATA_DIR=/mnt/collection/pt
+    docker-compose -H "ssh://me@$API_HOST" run web tail -f /opt/api/log/production.log
+  fi
+fi
