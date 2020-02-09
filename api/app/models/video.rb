@@ -36,7 +36,7 @@ class Video < ApplicationRecord
   end
 
   def derived_title
-    "#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{remote_id || 'No Id'}"
+    clean_string("#{subscription.title || 'No Sub'} - #{title || 'No Title'} - #{remote_id || 'No Id'}")
   end
 
   def video_formats
@@ -86,5 +86,14 @@ class Video < ApplicationRecord
   def remove!
     File.delete(file_path) if file_exists?
     update!(downloaded: false, file_path: nil)
+  end
+
+  private
+
+  def clean_string(string)
+    string
+      .gsub(/[^A-Za-z0-9]/, '')
+      .encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+      .squish
   end
 end
