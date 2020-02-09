@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+export API_HOST=192.168.1.201
+export DATA_DIR=/mnt/collection/pt_stage
+
+docker-compose -H "ssh://me@192.168.1.201" run web tail -f /opt/api/log/production.log
