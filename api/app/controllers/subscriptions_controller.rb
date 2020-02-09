@@ -1,5 +1,10 @@
 class SubscriptionsController < ApplicationController
   def create
+    unless subscription_class.present?
+      render json: { error: 'Unsupported subscription host' }
+      return
+    end
+
     s = subscription_class.create!(url: url_param, keep_count: 2)
     SyncJob.perform_later(s.id)
 
@@ -54,11 +59,9 @@ class SubscriptionsController < ApplicationController
   end
 
   def subscription_class
-    case URI(url_param).host
-    when 'youtube.com'
-      YtSubscription
-    when "watchnebula.com"
-      NebulaSubscription
-    end
+    host = URI(url_param).host
+
+    return YtSubscription if host.include?('youtube.com')
+    return NebulaSubscription if host.include?('watchnebula.com')
   end
 end
