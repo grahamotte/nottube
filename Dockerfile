@@ -21,8 +21,11 @@ RUN apt-get install -y make
 RUN apt-get install -y openssl
 RUN apt-get install -y postgresql
 RUN apt-get install -y postgresql-contrib
-RUN apt-get install -y youtube-dl
 RUN apt-get install -y zlib1g-dev
+
+# youtube-dl
+RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+RUN chmod a+rx /usr/local/bin/youtube-dl
 
 # ruby 2.6.3
 WORKDIR /tmp
