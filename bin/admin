@@ -11,7 +11,7 @@ if [[ $ACTION == 'deploy' ]]; then
   fi
 
   if [[ $ENV == 'stage' ]]; then
-    export API_HOST=192.168.1.201
+    export API_HOST=192.168.1.202
     export DATA_DIR=/mnt/collection/pt_stage
     docker-compose -H "ssh://me@$API_HOST" down
     docker-compose -H "ssh://me@$API_HOST" up --build
@@ -33,7 +33,7 @@ if [[ $ACTION == 'console' ]]; then
   fi
 
   if [[ $ENV == 'stage' ]]; then
-    export API_HOST=192.168.1.201
+    export API_HOST=192.168.1.202
     export DATA_DIR=/mnt/collection/pt_stage
     docker-compose -H "ssh://me@$API_HOST" run web bash -c "cd /opt/api && rails c"
   fi
@@ -51,7 +51,7 @@ if [[ $ACTION == 'log' ]]; then
   fi
 
   if [[ $ENV == 'stage' ]]; then
-    export API_HOST=192.168.1.201
+    export API_HOST=192.168.1.202
     export DATA_DIR=/mnt/collection/pt_stage
     docker-compose -H "ssh://me@$API_HOST" run web tail -f /opt/api/log/production.log
   fi

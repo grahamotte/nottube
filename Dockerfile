@@ -2,28 +2,31 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# common deps
+# common system deps
 RUN apt-get update
 RUN apt-get -y upgrade
+RUN apt-get install -y apt-transport-https
+RUN apt-get install -y build-essential
+RUN apt-get install -y ca-certificates
+RUN apt-get install -y curl
+RUN apt-get install -y dirmngr
 RUN apt-get install -y gcc
 RUN apt-get install -y git
-RUN apt-get install -y make
-RUN apt-get install -y youtube-dl
-RUN apt-get install -y wget
-RUN apt-get install -y curl
-
-# install ruby
-RUN apt-get install -y build-essential
 RUN apt-get install -y libcurl4-openssl-dev
 RUN apt-get install -y libpq-dev
 RUN apt-get install -y libreadline-dev
 RUN apt-get install -y libssl-dev
+RUN apt-get install -y lsb-release
+RUN apt-get install -y make
 RUN apt-get install -y openssl
 RUN apt-get install -y postgresql
 RUN apt-get install -y postgresql-contrib
+RUN apt-get install -y youtube-dl
 RUN apt-get install -y zlib1g-dev
+
+# ruby 2.6.3
 WORKDIR /tmp
-RUN wget http://ftp.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
+RUN curl http://ftp.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz --output ruby-2.6.3.tar.gz
 RUN tar -xzvf ruby-2.6.3.tar.gz
 WORKDIR /tmp/ruby-2.6.3
 RUN ./configure
@@ -32,12 +35,9 @@ RUN make install
 WORKDIR /tmp
 RUN rm -r ruby-*
 
-# install node
+# node 12
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -E
 RUN apt-get install -y nodejs
-RUN apt-get install -y libssl1.0-dev
-RUN apt-get install -y nodejs-dev
-RUN apt-get install -y node-gyp
-RUN apt-get install -y npm
 
 # bundle top
 COPY .ruby-version /opt/.ruby-version

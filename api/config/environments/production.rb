@@ -13,4 +13,5 @@ Rails.application.configure do
   config.log_level = :debug
   config.log_tags = [ :request_id ]
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.action_cable.allowed_request_origins = ["http://#{ENV['API_HOST']}:3030"]
 end

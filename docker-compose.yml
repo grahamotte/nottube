@@ -15,6 +15,7 @@ services:
       - ${DATA_DIR}/videos:/opt/videos
       - ${DATA_DIR}/logs:/opt/api/log
     environment:
+      - API_HOST=${API_HOST}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE:-F13018254F68C0940C69173F620F0056}
       - RAILS_ENV=${RAILS_ENV:-production}
       - ENABLE_CLOCK=${ENABLE_CLOCK:-}
