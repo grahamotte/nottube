@@ -3,7 +3,7 @@ import { Column, Columns, Control, Field, Input } from "bloomer";
 import Layout from "../components/layout";
 import LoadedButton from "../components/loadedButton";
 import React from "react";
-import SubscriptionCard from "../components/subscriptionCard";
+import SubscriptionCard from "../components/subscriptions/card";
 import host from "../utils/apiHost";
 import { observer } from "mobx-react";
 import store from "../stores";
@@ -59,7 +59,7 @@ class Klass extends React.Component {
         </Columns>
         <div className="card-columns columns-3-desktop columns-2-tablet columns-1-mobile">
           {store.subscriptions.all.map((s, si) => {
-            return <SubscriptionCard key={si} s={s} />;
+            return <SubscriptionCard key={si} subscription={s} />;
           })}
         </div>
       </Layout>

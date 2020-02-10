@@ -8,6 +8,7 @@ import Queue from "./pages/queue";
 import React from "react";
 import Settings from "./pages/settings";
 import Subscriptions from "./pages/subscriptions";
+import Videos from "./pages/videos";
 import { cableHost } from "./utils/apiHost";
 import { observer } from "mobx-react";
 import store from "./stores";
@@ -25,6 +26,7 @@ export default observer(props => {
         ></ActionCableConsumer>
 
         {store.ui.page === "subscriptions" && <Subscriptions />}
+        {store.ui.page === "videos" && <Videos />}
         {store.ui.page === "queue" && <Queue />}
         {store.ui.page === "settings" && <Settings />}
       </ActionCableProvider>

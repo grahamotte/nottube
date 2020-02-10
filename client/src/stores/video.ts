@@ -6,7 +6,7 @@ export default class Video {
   @observable remoteId: string = "";
   @observable title: string = "";
   @observable thumbnailUrl: string = "";
-  @observable descriptionText: string = "";
+  @observable description: string = "";
   @observable duration: number = 0;
   @observable publishedAt: string = "";
   @observable createdAt: string = "";
@@ -21,7 +21,7 @@ export default class Video {
     this.publishedAt = params.published_at;
     this.title = params.title;
     this.thumbnailUrl = params.thumbnail_url;
-    this.descriptionText = params.description;
+    this.description = params.description || "No Description";
     this.duration = params.duration;
     this.createdAt = params.created_at;
     this.updatedAt = params.updated_at;
@@ -29,16 +29,15 @@ export default class Video {
     this.downloaded = params.downloaded;
   }
 
-  @computed
-  get description() {
-    const maxLen = 1000;
-
-    if (this.descriptionText) {
-      return `${this.descriptionText.substring(0, maxLen)} ${
-        this.descriptionText.length > maxLen ? "..." : ""
-      }`;
+  @computed get status() {
+    if (this.downloaded) {
+      return "Downloaded";
     }
 
-    return "No Description";
+    if (this.scheduled) {
+      return "Scheduled";
+    }
+
+    return "N/A";
   }
 }

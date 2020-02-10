@@ -57,6 +57,7 @@ export default observer(props => {
         <NavbarMenu isActive={true}>
           <NavbarStart>
             {navItem("subscriptions")}
+            {navItem("videos")}
             {navItem("queue")}
             {navItem("settings")}
           </NavbarStart>

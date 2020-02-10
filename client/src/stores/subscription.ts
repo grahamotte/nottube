@@ -1,4 +1,4 @@
-import { action, computed, observable } from "mobx";
+import { action, observable } from "mobx";
 
 import Video from "./video";
 import axios from "axios";
@@ -11,7 +11,7 @@ export default class Subscription {
   @observable url: string = "";
   @observable title: string = "";
   @observable thumbnailUrl: string = "";
-  @observable descriptionText: string = "";
+  @observable description: string = "";
   @observable videoCount: number = 0;
   @observable updatedAt: string = "";
   @observable subscriberCount: number = 0;
@@ -32,7 +32,7 @@ export default class Subscription {
     this.url = params.url;
     this.title = params.title;
     this.thumbnailUrl = params.thumbnail_url;
-    this.descriptionText = params.description;
+    this.description = params.description || "No Description";
     this.videoCount = params.video_count;
     this.updatedAt = params.updated_at;
     this.subscriberCount = params.subscriber_count;
@@ -42,19 +42,6 @@ export default class Subscription {
     this.keepCount = params.keep_count;
     this.source = params.source;
   };
-
-  @computed
-  get description() {
-    const maxLen = 1000;
-
-    if (this.descriptionText) {
-      return `${this.descriptionText.substring(0, maxLen)} ${
-        this.descriptionText.length > maxLen ? "..." : ""
-      }`;
-    }
-
-    return "No Description";
-  }
 
   @action getVideos = () => {
     axios

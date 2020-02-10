@@ -22,7 +22,6 @@ const field = (label: string, key: any) => {
               onChange={event => {
                 let element = event.currentTarget as HTMLInputElement;
                 store.settings.set(key, element.value);
-                console.log(store.settings.attrs);
               }}
             />
           </Control>

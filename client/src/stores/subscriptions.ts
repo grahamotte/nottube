@@ -12,6 +12,10 @@ export default class Klass {
     this.refresh();
   }
 
+  fromId = (id: number) => {
+    return this.all.find(x => Number(x.id) === Number(id));
+  };
+
   @action refresh = () => {
     axios
       .get(`${host}/subscriptions`)
