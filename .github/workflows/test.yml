@@ -16,19 +16,19 @@ jobs:
       with:
         ruby-version: 2.6.x
 
-    - name: Bundle
-      run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
-        cd api
-        bundle install --jobs 4 --retry 3
+    # - name: Bundle
+    #   run: |
+    #     gem install bundler
+    #     bundle install --jobs 4 --retry 3
+    #     cd api
+    #     bundle install --jobs 4 --retry 3
 
-    - name: Test API
-      run: |
-        cd api
-        bundle exec rake db:create RAILS_ENV=test
-        bundle exec rake db:migrate RAILS_ENV=test
-        bundle exec rake test
+    # - name: Test API
+    #   run: |
+    #     cd api
+    #     bundle exec rake db:create RAILS_ENV=test
+    #     bundle exec rake db:migrate RAILS_ENV=test
+    #     bundle exec rake test
 
     # - name: NPM install
     # run: |

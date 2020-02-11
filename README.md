@@ -6,13 +6,14 @@ Plextube is a subscription manager and video downloader for youtube and nebula. 
 
 Build:
 ```
-docker-compose build
 docker-compose up
 ```
 
 Deploy:
 ```
-env API_HOST=<your servers> docker-compose -H "ssh://<user>@<your server>" up -d --build
+export API_HOST=<your server>
+export DATA_DIR=<videos path>
+docker-compose -H "ssh://<user>@<your server>" up --build --detach
 ```
 
 ---
