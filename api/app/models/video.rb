@@ -92,8 +92,7 @@ class Video < ApplicationRecord
 
   def clean_string(string)
     string
-      .gsub(/[^A-Za-z0-9]/, '')
-      .encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+      .then { |s| ActiveStorage::Filename.new(s).sanitized }
       .squish
   end
 end
