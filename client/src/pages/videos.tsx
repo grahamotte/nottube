@@ -34,24 +34,14 @@ const VideoCard = observer((video: any) => {
       </CardImage>
       <CardContent>
         <Content>{video.title}</Content>
-        <Columns>
-          <Column>
-            <DatapairGroup
-              pairs={{
-                Published: format(video.publishedAt),
-                "Last Updated": format(video.updatedAt)
-              }}
-            />
-          </Column>
-          <Column>
-            <DatapairGroup
-              pairs={{
-                status: video.status,
-                Duration: `${(video.duration / 60).toFixed(2)} min`
-              }}
-            />
-          </Column>
-        </Columns>
+        <DatapairGroup
+          pairs={{
+            Status: video.status,
+            Duration: `${(video.duration / 60).toFixed(2)} min`,
+            Published: format(video.publishedAt),
+            Updated: format(video.updatedAt)
+          }}
+        />
       </CardContent>
     </Card>
   );

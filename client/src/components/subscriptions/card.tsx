@@ -69,12 +69,6 @@ export default observer(
         </CardFooterItem>
       );
 
-      // const edit = (
-      //   <CardFooterItem href="#" style={{ color: colors.text }}>
-      //     <FaPencilAlt />
-      //   </CardFooterItem>
-      // );
-
       const remove = (
         <CardFooterItem
           href="#"

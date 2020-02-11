@@ -1,22 +1,31 @@
-import { Content, Tile } from "bloomer";
+import { Column, Columns } from "bloomer";
 
 import React from "react";
 
 export default (props: any) => {
-  const datapairs = Object.keys(props.pairs).map((p: any, pi: number) => {
+  const keys = Object.keys(props.pairs).map((p: any, pi: number) => {
     return (
-      <div key={pi}>
-        <Tile>
-          <small>
-            <b>{p}</b>
-          </small>
-        </Tile>
-        <Tile>
-          <small>{props.pairs[p]}</small>
-        </Tile>
-      </div>
+      <Column isSize="1/3" key={`key${pi}`}>
+        <small>
+          <b>{p}</b>
+        </small>
+      </Column>
     );
   });
 
-  return <Content>{datapairs}</Content>;
+  const values = Object.keys(props.pairs).map((p: any, pi: number) => {
+    return (
+      <Column isSize="2/3" key={`value${pi}`}>
+        <small>{props.pairs[p]}</small>
+      </Column>
+    );
+  });
+
+  return (
+    <Columns isMultiline isGapless>
+      {keys.flatMap((p, i) => {
+        return [p, values[i]];
+      })}
+    </Columns>
+  );
 };
