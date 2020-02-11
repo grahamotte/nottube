@@ -86,7 +86,7 @@ const content = (filterSubscriptionId: number) => {
 
       <hr />
 
-      <div className="card-columns columns-2-desktop columns-2-tablet columns-1-mobile">
+      <div className="card-columns columns-3-desktop columns-2-tablet columns-1-mobile">
         {store.videos.filteredResults.map((v, i) => {
           return <VideoCard key={i} video={v} />;
         })}
