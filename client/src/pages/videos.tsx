@@ -26,42 +26,36 @@ interface KlassInterface {
   video: any;
 }
 
-const VideoCard = observer(
-  class Klass extends React.Component<KlassInterface> {
-    render() {
-      return (
-        <Card>
-          <CardImage>
-            <Image src={this.props.video.thumbnailUrl} />
-          </CardImage>
-          <CardContent>
-            <Content>{this.props.video.title}</Content>
-            <Columns>
-              <Column>
-                <DatapairGroup
-                  pairs={{
-                    Published: format(this.props.video.publishedAt),
-                    "Last Updated": format(this.props.video.updatedAt)
-                  }}
-                />
-              </Column>
-              <Column>
-                <DatapairGroup
-                  pairs={{
-                    status: this.props.video.status,
-                    Duration: `${(
-                      this.props.video.status.duration / 60
-                    ).toFixed(2)} min`
-                  }}
-                />
-              </Column>
-            </Columns>
-          </CardContent>
-        </Card>
-      );
-    }
-  }
-);
+const VideoCard = observer((video: any) => {
+  return (
+    <Card>
+      <CardImage>
+        <Image src={video.thumbnailUrl} />
+      </CardImage>
+      <CardContent>
+        <Content>{video.title}</Content>
+        <Columns>
+          <Column>
+            <DatapairGroup
+              pairs={{
+                Published: format(video.publishedAt),
+                "Last Updated": format(video.updatedAt)
+              }}
+            />
+          </Column>
+          <Column>
+            <DatapairGroup
+              pairs={{
+                status: video.status,
+                Duration: `${(video.duration / 60).toFixed(2)} min`
+              }}
+            />
+          </Column>
+        </Columns>
+      </CardContent>
+    </Card>
+  );
+});
 
 const content = (filterSubscriptionId: number) => {
   if (!filterSubscriptionId) {
@@ -86,7 +80,7 @@ const content = (filterSubscriptionId: number) => {
 
       <hr />
 
-      <div className="card-columns columns-3-desktop columns-2-tablet columns-1-mobile">
+      <div className="card-columns columns-4-desktop columns-3-tablet columns-2-mobile">
         {store.videos.filteredResults.map((v, i) => {
           return <VideoCard key={i} video={v} />;
         })}
@@ -113,7 +107,7 @@ export default observer(() => {
                   store.videos.setFilterSubcriptionId(element.value as any);
                 }}
               >
-                <option value={0}></option>
+                <option value={undefined}></option>
                 {store.subscriptions.all.map((s, i) => (
                   <option key={i} value={s.id}>
                     {s.title}
