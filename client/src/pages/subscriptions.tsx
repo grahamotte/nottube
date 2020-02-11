@@ -1,5 +1,6 @@
 import { Column, Columns, Control, Field, Input } from "bloomer";
 
+import { FaCheck } from "react-icons/fa";
 import Layout from "../components/layout";
 import LoadedButton from "../components/loadedButton";
 import React from "react";
@@ -10,7 +11,8 @@ import store from "../stores";
 
 class Klass extends React.Component {
   state = {
-    addUrl: ""
+    addUrl: "",
+    syncingAll: false
   };
 
   render() {
@@ -27,6 +29,7 @@ class Klass extends React.Component {
                   value={this.state.addUrl}
                   onChange={event => {
                     let element = event.currentTarget as HTMLInputElement;
+
                     this.setState({ addUrl: element.value });
                   }}
                 />
@@ -48,12 +51,14 @@ class Klass extends React.Component {
           </Column>
           <Column isSize="1/3" className="has-text-right">
             <LoadedButton
-              label="Sync All"
+              label={this.state.syncingAll ? <FaCheck /> : "Sync All"}
+              disabled={this.state.syncingAll}
               style={{ marginLeft: "0.25em" }}
               isColor="primary"
               isOutlined
               url={`${host}/subscriptions/sync_all`}
               method="post"
+              then={() => this.setState({ syncingAll: true })}
             />
           </Column>
         </Columns>

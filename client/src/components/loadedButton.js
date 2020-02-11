@@ -68,6 +68,7 @@ export default observer(
           onClick={this.onClick}
           isLoading={this.state.loading}
           style={this.props.style}
+          disabled={this.props.disabled}
         >
           {this.state.loading ? loadingText : label}
         </Button>

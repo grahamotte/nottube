@@ -10,6 +10,10 @@ body {
  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
+a:hover {
+  color: #00D1B2 !important;
+}
+
 .card-columns {
   column-count: 1;
 }

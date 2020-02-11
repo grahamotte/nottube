@@ -26,20 +26,20 @@ interface KlassInterface {
   video: any;
 }
 
-const VideoCard = observer((video: any) => {
+const VideoCard = observer((props: any) => {
   return (
     <Card>
       <CardImage>
-        <Image src={video.thumbnailUrl} />
+        <Image src={props.video.thumbnailUrl} />
       </CardImage>
       <CardContent>
-        <Content>{video.title}</Content>
+        <Content>{props.video.title}</Content>
         <DatapairGroup
           pairs={{
-            Status: video.status,
-            Duration: `${(video.duration / 60).toFixed(2)} min`,
-            Published: format(video.publishedAt),
-            Updated: format(video.updatedAt)
+            Status: props.video.status,
+            Duration: `${(props.video.duration / 60).toFixed(2)} min`,
+            Published: format(props.video.publishedAt),
+            Updated: format(props.video.updatedAt)
           }}
         />
       </CardContent>
