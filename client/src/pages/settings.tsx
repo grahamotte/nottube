@@ -55,9 +55,14 @@ export default observer(
     render() {
       return (
         <Layout>
+          {field("Number of videos to keep", "keep_count")}
+          {field(
+            "Number of videos to look back when syncing",
+            "look_back_count"
+          )}
+          <hr />
           {field("Nebula Email", "nebula_user")}
           {field("Nebula Password", "nebula_pass")}
-          {info("Nebula Cache", "nebula_cache")}
           <Columns>
             <Column hasTextAlign="right">
               <LoadedButton

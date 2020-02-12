@@ -2,22 +2,23 @@
 #
 # Table name: settings
 #
-#  id           :integer          not null, primary key
-#  yt_api_key_a :string
-#  videos_path  :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  nebula_user  :string
-#  nebula_pass  :string
-#  nebula_cache :text
-#  yt_api_key_b :string
-#  yt_api_key_c :string
+#  id              :bigint           not null, primary key
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  nebula_user     :string
+#  nebula_pass     :string
+#  nebula_cache    :text
+#  keep_count      :integer          default(2), not null
+#  look_back_count :integer          default(16), not null
 #
 
 class Setting < ApplicationRecord
   def self.instance
     first_or_create
   end
+
+  validates :keep_count, presence: true, numericality: { greater_than: 0 }
+  validates :look_back_count, presence: true, numericality: { greater_than: 0 }
 
   # Nebula
   validates :nebula_user, presence: true, unless: -> { nebula_user.blank? && nebula_pass.blank? }
@@ -67,7 +68,7 @@ class Setting < ApplicationRecord
   def validate_nebula_creds
     raise unless nebula_tokens.fetch('public').fetch('ZYPE_API_KEY').present?
     raise unless nebula_tokens.fetch('user').fetch('zype_auth_info').fetch('access_token').present?
-  # rescue StandardError => e
-  #   errors.add(:base, 'nebula API key is not valid')
+  rescue StandardError => e
+    errors.add(:base, 'nebula API key is not valid')
   end
 end

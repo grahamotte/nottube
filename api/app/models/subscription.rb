@@ -2,7 +2,7 @@
 #
 # Table name: subscriptions
 #
-#  id               :integer          not null, primary key
+#  id               :bigint           not null, primary key
 #  remote_id        :string
 #  url              :string           not null
 #  title            :string
@@ -12,8 +12,7 @@
 #  subscriber_count :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  keep_count       :integer          default(8), not null
-#  type             :string
+#  type             :string           default("YtSubscription")
 #
 
 class Subscription < ApplicationRecord
@@ -40,7 +39,7 @@ class Subscription < ApplicationRecord
   end
 
   def videos_to_keep
-    videos.first(keep_count)
+    videos.first(Setting.instance.keep_count)
   end
 
   def friendly_name

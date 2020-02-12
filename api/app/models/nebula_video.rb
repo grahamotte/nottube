@@ -2,7 +2,7 @@
 #
 # Table name: videos
 #
-#  id              :integer          not null, primary key
+#  id              :bigint           not null, primary key
 #  subscription_id :integer
 #  remote_id       :string
 #  published_at    :datetime
@@ -11,7 +11,6 @@
 #  file_path       :string
 #  description     :text
 #  duration        :integer
-#  downloaded      :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  type            :string           default("YtVideo")

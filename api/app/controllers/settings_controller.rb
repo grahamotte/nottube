@@ -7,9 +7,8 @@ class SettingsController < ApplicationController
     update_params = params.permit(
       :nebula_pass,
       :nebula_user,
-      :yt_api_key_a,
-      :yt_api_key_b,
-      :yt_api_key_c,
+      :keep_count,
+      :look_back_count,
     )
 
     s = Setting.instance
