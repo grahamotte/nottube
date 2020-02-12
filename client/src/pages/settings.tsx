@@ -31,18 +31,18 @@ const field = (label: string, key: any) => {
   );
 };
 
-const info = (label: string, key: any) => {
-  return (
-    <Columns className="is-flex is-vcentered">
-      <Column isSize="1/2" hasTextAlign="right">
-        <Label>{label}</Label>
-      </Column>
-      <Column isSize="1/2">
-        <pre>{JSON.stringify(store.settings.get(key))}</pre>
-      </Column>
-    </Columns>
-  );
-};
+// const info = (label: string, key: any) => {
+//   return (
+//     <Columns className="is-flex is-vcentered">
+//       <Column isSize="1/2" hasTextAlign="right">
+//         <Label>{label}</Label>
+//       </Column>
+//       <Column isSize="1/2">
+//         <pre>{JSON.stringify(store.settings.get(key))}</pre>
+//       </Column>
+//     </Columns>
+//   );
+// };
 
 export default observer(
   class Klass extends React.Component {

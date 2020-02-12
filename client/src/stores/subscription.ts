@@ -19,7 +19,6 @@ export default class Subscription {
   @observable videosKnown: number = 0;
   @observable videosDownloaded: number = 0;
   @observable videosScheduled: number = 0;
-  @observable keepCount: number = 0;
   @observable source: boolean = false;
   @observable syncing: boolean = false;
 
@@ -40,7 +39,6 @@ export default class Subscription {
     this.videosKnown = params.videos_known;
     this.videosDownloaded = params.videos_downloaded;
     this.videosScheduled = params.videos_scheduled;
-    this.keepCount = params.keep_count;
     this.source = params.source;
     this.syncing = params.syncing;
   };

@@ -32,13 +32,14 @@ const VideoCard = observer((props: any) => {
       <CardImage>
         <Image src={props.video.thumbnailUrl} />
       </CardImage>
-      <CardContent>
+      <CardContent style={{ overflow: "hidden" }}>
         <Content>{props.video.title}</Content>
         <DatapairGroup
           pairs={{
             Status: props.video.status,
             Duration: `${(props.video.duration / 60).toFixed(2)} min`,
             Published: format(props.video.publishedAt),
+            ID: props.video.remoteId,
             Updated: format(props.video.updatedAt)
           }}
         />
@@ -70,7 +71,7 @@ const content = (filterSubscriptionId: number) => {
 
       <hr />
 
-      <div className="card-columns columns-4-desktop columns-3-tablet columns-2-mobile">
+      <div className="card-columns columns-4-desktop columns-2-tablet columns-1-mobile">
         {store.videos.filteredResults.map((v, i) => {
           return <VideoCard key={i} video={v} />;
         })}

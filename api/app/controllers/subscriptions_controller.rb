@@ -38,8 +38,6 @@ class SubscriptionsController < ApplicationController
     render json: Subscription
       .all
       .includes(:videos)
-      .sort_by(&:updated_at)
-      .reverse
       .map(&:serialize)
   end
 

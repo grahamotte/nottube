@@ -28,13 +28,9 @@ export default observer((props: any) => {
         <a href={props.subscription.url}>
           <small>
             <Title isSize={4}>{props.subscription.title}</Title>
-            {props.subscription.subscriberCount > 0 && (
-              <Subtitle>
-                <i>
-                  {abreviateNumber(props.subscription.subscriberCount)} subs
-                </i>
-              </Subtitle>
-            )}
+            <Subtitle>
+              <i>{props.subscription.source}</i>
+            </Subtitle>
           </small>
         </a>
       </MediaContent>

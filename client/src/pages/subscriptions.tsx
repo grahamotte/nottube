@@ -60,7 +60,9 @@ class Klass extends React.Component {
               url={`${host}/subscriptions/sync_all`}
               method="post"
               then={() => {
-                store.subscriptions.all.forEach(s => (s.syncing = true));
+                store.subscriptions.all
+                  .sort((a: any, b: any) => a.title - b.title)
+                  .forEach(s => (s.syncing = true));
                 store.ui.successNotification("Syncing all subscriptions!");
               }}
             />

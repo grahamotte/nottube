@@ -5,13 +5,7 @@ import {
   CardFooterItem,
   Content
 } from "bloomer";
-import {
-  FaCheck,
-  FaList,
-  FaMinus,
-  FaRegTrashAlt,
-  FaSync
-} from "react-icons/fa";
+import { FaList, FaMinus, FaRegTrashAlt, FaSync } from "react-icons/fa";
 
 import Description from "./description";
 import Detail from "./detail";
@@ -97,7 +91,7 @@ export default observer(
 
       return (
         <Card>
-          <CardContent>
+          <CardContent style={{ overflow: "hidden" }}>
             <Name subscription={this.props.subscription} />
             <Description subscription={this.props.subscription} />
             <Content>
