@@ -29,6 +29,13 @@ class Subscription < ApplicationRecord
       videos_downloaded: videos.count(&:file_exists?),
       videos_scheduled: videos.count(&:scheduled?),
       source: friendly_name,
+      syncing: (
+        Delayed::Job
+          .all
+          .map { |j| j.payload_object.job_data }
+          .select { |j| j.dig('job_class') == 'SyncJob' }
+          .any? { |j| j.dig('arguments').include?(id) }
+      ),
     )
   end
 

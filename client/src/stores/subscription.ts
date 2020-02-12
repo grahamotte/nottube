@@ -21,6 +21,7 @@ export default class Subscription {
   @observable videosScheduled: number = 0;
   @observable keepCount: number = 0;
   @observable source: boolean = false;
+  @observable syncing: boolean = false;
 
   constructor(params: any) {
     this.setParams(params);
@@ -41,6 +42,7 @@ export default class Subscription {
     this.videosScheduled = params.videos_scheduled;
     this.keepCount = params.keep_count;
     this.source = params.source;
+    this.syncing = params.syncing;
   };
 
   @action getVideos = () => {

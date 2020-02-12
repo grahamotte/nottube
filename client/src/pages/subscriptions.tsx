@@ -11,11 +11,12 @@ import store from "../stores";
 
 class Klass extends React.Component {
   state = {
-    addUrl: "",
-    syncingAll: false
+    addUrl: ""
   };
 
   render() {
+    const allSyncing = store.subscriptions.all.every(s => s.syncing);
+
     return (
       <Layout>
         <Columns>
@@ -51,14 +52,17 @@ class Klass extends React.Component {
           </Column>
           <Column isSize="1/3" className="has-text-right">
             <LoadedButton
-              label={this.state.syncingAll ? <FaCheck /> : "Sync All"}
-              disabled={this.state.syncingAll}
+              label={allSyncing ? <FaCheck /> : "Sync All"}
+              disabled={allSyncing}
               style={{ marginLeft: "0.25em" }}
               isColor="primary"
               isOutlined
               url={`${host}/subscriptions/sync_all`}
               method="post"
-              then={() => this.setState({ syncingAll: true })}
+              then={() => {
+                store.subscriptions.all.forEach(s => (s.syncing = true));
+                store.ui.successNotification("Syncing all subscriptions!");
+              }}
             />
           </Column>
         </Columns>

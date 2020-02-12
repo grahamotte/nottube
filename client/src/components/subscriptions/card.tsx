@@ -30,21 +30,22 @@ interface KlassInterface {
 export default observer(
   class Klass extends React.Component<KlassInterface> {
     state = {
-      syncing: false,
       deleting: false
     };
 
     render() {
       const sync = (
         <CardFooterItem
-          href="#"
+          href={this.props.subscription.syncing ? undefined : "#"}
           style={{ color: colors.text }}
           onClick={() => {
+            if (this.props.subscription.syncing) {
+              return;
+            }
+
             axios
               .post(`${host}/subscriptions/${this.props.subscription.id}/sync`)
-              .then(response => {
-                this.setState({ syncing: true });
-              })
+              .then(() => (this.props.subscription.syncing = true))
               .catch(() => {
                 store.ui.errorNotification(
                   `Sync request for ${this.props.subscription.title} failed!`
@@ -52,7 +53,7 @@ export default observer(
               });
           }}
         >
-          {this.state.syncing ? <FaCheck /> : <FaSync />}
+          <FaSync className={this.props.subscription.syncing ? "spin" : ""} />
         </CardFooterItem>
       );
 
