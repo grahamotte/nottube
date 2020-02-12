@@ -1,8 +1,9 @@
 import { Column, Columns } from "bloomer";
 
 import React from "react";
+import { observer } from "mobx-react";
 
-export default (props: any) => {
+export default observer((props: any) => {
   const keys = Object.keys(props.pairs).map((p: any, pi: number) => {
     return (
       <Column isSize="1/3" key={`key${pi}`}>
@@ -28,4 +29,4 @@ export default (props: any) => {
       })}
     </Columns>
   );
-};
+});

@@ -1,6 +1,7 @@
 import { Media, MediaContent, MediaLeft, Subtitle, Title } from "bloomer";
 
 import React from "react";
+import { observer } from "mobx-react";
 
 const abreviateNumber = (value: number) => {
   var length = (value + "").length,
@@ -11,7 +12,7 @@ const abreviateNumber = (value: number) => {
   return (value / Math.pow(1000, index)).toFixed(1) + suffix[index - 1];
 };
 
-export default (props: any) => {
+export default observer((props: any) => {
   return (
     <Media>
       <MediaLeft>
@@ -39,4 +40,4 @@ export default (props: any) => {
       </MediaContent>
     </Media>
   );
-};
+});

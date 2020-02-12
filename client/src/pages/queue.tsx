@@ -10,7 +10,7 @@ import host from "../utils/apiHost";
 import { observer } from "mobx-react";
 import store from "../stores";
 
-const Code = (props: any) => {
+const Code = observer((props: any) => {
   return (
     <pre
       style={{
@@ -26,7 +26,7 @@ const Code = (props: any) => {
       <code>{props.children}</code>
     </pre>
   );
-};
+});
 
 class Klass extends React.Component {
   render() {

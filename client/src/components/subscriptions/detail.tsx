@@ -1,8 +1,9 @@
 import DatapairGroup from "../datapairGroup";
 import React from "react";
 import { format } from "timeago.js";
+import { observer } from "mobx-react";
 
-export default (props: any) => {
+export default observer((props: any) => {
   const s = props.subscription;
 
   return (
@@ -15,4 +16,4 @@ export default (props: any) => {
       }}
     />
   );
-};
+});
