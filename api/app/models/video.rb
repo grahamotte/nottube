@@ -21,7 +21,6 @@ class Video < ApplicationRecord
   belongs_to :subscription
 
   default_scope { order('published_at desc') }
-  scope :downloaded, -> { where(downloaded: true) }
 
   def execute_download
     raise 'implement me'
@@ -29,6 +28,15 @@ class Video < ApplicationRecord
 
   def refresh_metadata
     raise 'implement me'
+  end
+
+  def serialize
+    attributes
+      .symbolize_keys
+      .merge(
+        scheduled: scheduled?,
+        downloaded: file_exists?,
+      )
   end
 
   def videos_dir
@@ -50,7 +58,7 @@ class Video < ApplicationRecord
   def possible_file_paths
     [
       read_attribute(:file_path),
-      *video_formats.map { |fmt| File.join(videos_dir, "#{derived_title(nil)}.#{fmt}") }
+      *video_formats.map { |fmt| File.join(videos_dir, "#{derived_title}.#{fmt}") }
     ].compact
   end
 
@@ -70,19 +78,15 @@ class Video < ApplicationRecord
     File.exists?(file_path)
   end
 
-  def watchable?
-    downloaded? && file_exists?
-  end
-
   def download!
-    return false if downloaded?
+    return false if file_exists?
     return false unless scheduled?
 
     execute_download
 
     if file_exists?
       FileUtils.chmod(0777, file_path)
-      update!(file_path: file_path, downloaded: true)
+      update!(file_path: file_path)
       return true
     end
 
@@ -91,7 +95,7 @@ class Video < ApplicationRecord
 
   def remove!
     File.delete(file_path) if file_exists?
-    update!(downloaded: false, file_path: nil)
+    update!(file_path: nil)
   end
 
   private

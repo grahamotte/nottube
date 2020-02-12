@@ -4,7 +4,7 @@ class VideosController < ApplicationController
       Subscription
         .find_by!(id: params.require(:subscription_id))
         .videos
-        .map { |v| v.attributes.merge(scheduled: v.scheduled?) }
+        .map(&:serialize)
     )
   end
 end
