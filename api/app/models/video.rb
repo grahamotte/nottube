@@ -80,7 +80,13 @@ class Video < ApplicationRecord
 
     execute_download
 
-    update!(file_path: file_path, downloaded: true) if file_exists?
+    if file_exists?
+      FileUtils.chmod(0777, file_path)
+      update!(file_path: file_path, downloaded: true)
+      return true
+    end
+
+    false
   end
 
   def remove!
