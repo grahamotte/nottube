@@ -44,8 +44,8 @@ class YtSubscription < Subscription
       title: hash_find_dig(channel_info, :response, :metadata, :title),
       thumbnail_url: hash_find_dig(channel_info, :response, :metadata, :avatar, :thumbnails, :url),
       description: hash_find_dig(channel_info, :response, :metadata, :description),
-      video_count: -1,
-      subscriber_count: -1,
+      video_count: 0,
+      subscriber_count: 0,
     )
   end
 
