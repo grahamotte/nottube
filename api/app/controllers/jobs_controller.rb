@@ -1,6 +1,6 @@
 class JobsController < ApplicationController
   def index
-    jobs = Delayed::Job.all.sort_by(&:created_at).reverse.map do |j|
+    jobs = Delayed::Job.all.sort_by(&:created_at).map do |j|
       {
         class: j.payload_object.job_data.dig("job_class"),
         arguments: j.payload_object.job_data.dig("arguments").map { |x| "- #{x}" }.join("\n"),

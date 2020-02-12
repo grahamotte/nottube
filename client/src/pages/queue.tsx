@@ -16,7 +16,6 @@ const Code = observer((props: any) => {
       style={{
         whiteSpace: "pre-wrap",
         wordWrap: "break-word",
-        height: "10em",
         maxHeight: "10em",
         overflow: "auto",
         padding: "1em",
@@ -58,7 +57,6 @@ class Klass extends React.Component {
           <thead>
             <tr>
               <th></th>
-              <th>Attempts</th>
               <th>Age</th>
               <th>Job</th>
               <th>Args</th>
@@ -73,7 +71,6 @@ class Klass extends React.Component {
                   <td style={{ verticalAlign: "middle" }}>
                     {j.running && <Spinner />}
                   </td>
-                  <td style={{ verticalAlign: "middle" }}>{j.attempts}</td>
                   <td style={{ verticalAlign: "middle", whiteSpace: "nowrap" }}>
                     {format(j.created_at)}
                   </td>

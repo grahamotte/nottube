@@ -26,7 +26,7 @@ class Subscription < ApplicationRecord
   def serialize
     attributes.merge(
       videos_known: videos.count,
-      videos_downloaded: videos.count(&:downloaded?),
+      videos_downloaded: videos.count(&:file_exists?),
       videos_scheduled: videos.count(&:scheduled?),
       source: friendly_name,
     )

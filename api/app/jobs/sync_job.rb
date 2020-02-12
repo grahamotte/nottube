@@ -4,9 +4,6 @@ class SyncJob < ApplicationJob
     s.configure_for_me
     s.refresh_metadata
 
-    # ensure everything marked as downloaded is actually downloaded
-    s.videos.each { |v| v.update!(downloaded: false) unless v.file_exists? }
-
     # pull videos and some of their metadata
     s.remote_video_ids(look_back).each do |vid|
       v = s.video_class.find_or_create_by(remote_id: vid, subscription: s)

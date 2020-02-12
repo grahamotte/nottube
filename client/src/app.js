@@ -14,7 +14,7 @@ import { observer } from "mobx-react";
 import store from "./stores";
 import { toast } from "react-toastify";
 
-toast.configure();
+toast.configure({ position: "bottom-right" });
 
 export default observer(props => {
   return (

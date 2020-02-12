@@ -27,7 +27,7 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     s = Subscription.find_by!(id: params.require(:id))
-    s.videos.where(downloaded: true).each { |v| v.remove! }
+    s.videos.select { |v| v.file_exists? }.each { |v| v.remove! }
     s.reload.videos.each { |v| v.destroy! }
     s.destroy!
 

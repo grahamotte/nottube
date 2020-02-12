@@ -9,7 +9,7 @@ export default observer((props: any) => {
   return (
     <DatapairGroup
       pairs={{
-        Videos: `${s.videosKnown} seen,  ${s.videoCount} total`,
+        Videos: `${s.videosKnown} seen,  ${s.videoCount || "?"} total`,
         Downloads: `${s.videosDownloaded} downloaded, ${s.keepCount} scheduled`,
         Source: s.source,
         Updated: format(s.updatedAt)

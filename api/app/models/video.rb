@@ -67,7 +67,7 @@ class Video < ApplicationRecord
   end
 
   def scheduled?
-    return false if downloaded?
+    return false if file_exists?
     return false if subscription.videos_to_keep.exclude?(self)
 
     true
@@ -103,6 +103,7 @@ class Video < ApplicationRecord
   def clean_string(string)
     string
       .then { |s| ActiveStorage::Filename.new(s).sanitized }
+      .gsub(/[^a-zA-Z0-9 -]/, '')
       .squish
   end
 end
