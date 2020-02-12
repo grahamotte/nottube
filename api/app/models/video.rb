@@ -50,7 +50,7 @@ class Video < ApplicationRecord
   def possible_file_paths
     [
       read_attribute(:file_path),
-      *video_formats.map { |fmt| File.join(videos_dir, "#{derived_title}.#{fmt}") }
+      *video_formats.map { |fmt| File.join(videos_dir, "#{derived_title(nil)}.#{fmt}") }
     ].compact
   end
 
