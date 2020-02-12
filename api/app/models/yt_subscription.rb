@@ -20,11 +20,11 @@ class YtSubscription < Subscription
   validates :remote_id, uniqueness: true
 
   before_validation do
-    self.remote_id ||= Yt::URL.new(url).id
+    self.remote_id ||= hash_find(channel_info, :channelId)
   end
 
   def configure_for_me
-    Yt.configure { |c| c.api_key = Setting.instance.yt_api_keys.sample }
+    nil
   end
 
   def friendly_name
@@ -35,22 +35,39 @@ class YtSubscription < Subscription
     YtVideo
   end
 
-
-  def remote_video_ids
-    Yt::Channel.new(id: remote_id).videos.map(&:id)
+  def remote_video_ids(n)
+    remote_videos(n).map { |x| x.dig(:id) }
   end
 
   def refresh_metadata
-    yt_channel = Yt::Channel.new(id: remote_id)
-
-    update!(remote_id: Yt::URL.new(url).id) if remote_id.blank?
-
     update!(
-      title: yt_channel.title || yt_channel.content_owner,
-      video_count: yt_channel.video_count,
-      thumbnail_url: yt_channel.thumbnail_url,
-      description: yt_channel.description,
-      subscriber_count: yt_channel.subscriber_count,
+      title: hash_find_dig(channel_info, :metadata, :title),
+      video_count: -1,
+      thumbnail_url: hash_find_dig(channel_info, :metadata, :avatar, :thumbnails, :url),
+      description: hash_find_dig(channel_info, :metadata, :description),
+      subscriber_count: -1,
     )
+  end
+
+  def channel_info
+    @channel_info ||= aggressive_deep_symbolize_keys(
+      JSON.parse(
+        RestClient::Request.execute(
+          method: :get,
+          url: url,
+          headers: {
+            params: { pbj: 1 },
+            'X-YouTube-Client-Version' => '2.20200211.02.00',
+            'X-YouTube-Client-Name' => 1,
+          }
+        ).body
+      )
+    ).sort_by { |x| x.keys.length }.last
+  end
+
+  def remote_videos(n)
+    execute('youtube-dl', '-j', "--playlist-end=#{n}", url)
+      .split("\n")
+      .map { |x| JSON.parse(x).deep_symbolize_keys }
   end
 end

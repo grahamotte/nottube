@@ -15,18 +15,6 @@ class ActiveSupport::TestCase
     File.stubs(:delete)
     File.stubs(:exists?).returns(true)
     Video.any_instance.stubs(:system)
-    Yt::Collections::Videos.any_instance.stubs(:first)
-    Yt::Channel.any_instance.stubs(:videos).returns([])
-    Yt::URL.stubs(:new).returns(stub(id: -1))
-    Yt::Video.stubs(:new).returns(
-      stub(
-        published_at: Time.now,
-        title: 'stubby title',
-        thumbnail_url: stub(thumbnail_url: 'http://t.url'),
-        description: 'this is not as it seems',
-        duration: 3342,
-      )
-    )
   end
 
   def set_setting(attrs)

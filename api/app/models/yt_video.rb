@@ -19,25 +19,24 @@
 
 class YtVideo < Video
   def execute_download
-    system(
-      [
-        "youtube-dl",
-        "ytsearch:#{remote_id}",
-        "-o \"#{default_file_path(nil)}.%(ext)s\"",
-        "--write-thumbnail",
-      ].join(' ')
+    execute(
+      "youtube-dl",
+      "ytsearch:#{remote_id}",
+      "-o \"#{default_file_path(nil)}.%(ext)s\"",
+      "--write-thumbnail",
     )
   end
 
   def refresh_metadata
-    yt_video = Yt::Video.new(id: remote_id)
+    data = execute("youtube-dl", '-j', "ytsearch:#{remote_id}")
+      .then { |x| JSON.parse(x).deep_symbolize_keys }
 
     update!(
-      published_at: yt_video.published_at,
-      title: yt_video.title,
-      thumbnail_url: yt_video.thumbnail_url(:high),
-      description: yt_video.description,
-      duration: yt_video.duration,
+      published_at: data.dig(:upload_date),
+      title: data.dig(:title),
+      thumbnail_url: data.dig(:thumbnail),
+      description: data.dig(:description),
+      duration: data.dig(:duration),
     )
   end
 end

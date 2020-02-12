@@ -19,33 +19,6 @@ class Setting < ApplicationRecord
     first_or_create
   end
 
-  # Yt
-  def yt_api_keys
-    [yt_api_key_a, yt_api_key_b, yt_api_key_c].compact
-  end
-
-  ['a', 'b', 'c'].each do |pos|
-    eval <<-RUBY
-      validates :yt_api_key_#{pos}, presence: true, unless: -> { yt_api_key_#{pos}.blank? }
-      validate :validate_yt_api_key_#{pos}, unless: -> { yt_api_key_#{pos}.blank? }
-      def validate_yt_api_key_#{pos}
-        Yt.configure { |c| c.api_key = yt_api_key_#{pos} }
-        Yt::Collections::Videos.new.first
-      rescue StandardError
-        errors.add(:base, 'Youtube #{pos} API key is not valid')
-      end
-    RUBY
-  end
-
-  # validates :yt_api_key, presence: true, unless: -> { yt_api_key.blank? }
-  # validate :validate_yt_api_key, unless: -> { yt_api_key.blank? }
-  # def validate_yt_api_key
-  #   Yt.configure { |c| c.api_key = yt_api_key }
-  #   Yt::Collections::Videos.new.first
-  # rescue StandardError
-  #   errors.add(:base, 'youtube API key is not valid')
-  # end
-
   # Nebula
   validates :nebula_user, presence: true, unless: -> { nebula_user.blank? && nebula_pass.blank? }
   validates :nebula_pass, presence: true, unless: -> { nebula_user.blank? && nebula_pass.blank? }

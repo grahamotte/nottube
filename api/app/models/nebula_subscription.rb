@@ -51,7 +51,7 @@ class NebulaSubscription < Subscription
     )
   end
 
-  def remote_video_ids
+  def remote_video_ids(n)
     params = {
       "playlist_id.inclusive" => remote_id,
       api_key: Setting.instance.nebula_tokens.dig('public', 'ZYPE_API_KEY'),
@@ -64,5 +64,6 @@ class NebulaSubscription < Subscription
       .then { |x| JSON.parse(x.body) }
       .dig('response')
       .map { |v| v.dig('_id') }
+      .first(n)
   end
 end

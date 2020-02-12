@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_06_055101) do
+ActiveRecord::Schema.define(version: 2020_02_12_024005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,14 +31,11 @@ ActiveRecord::Schema.define(version: 2020_02_06_055101) do
   end
 
   create_table "settings", force: :cascade do |t|
-    t.string "yt_api_key_a"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "nebula_user"
     t.string "nebula_pass"
     t.text "nebula_cache"
-    t.string "yt_api_key_b"
-    t.string "yt_api_key_c"
   end
 
   create_table "subscriptions", force: :cascade do |t|
