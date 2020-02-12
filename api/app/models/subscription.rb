@@ -19,7 +19,7 @@
 class Subscription < ApplicationRecord
   has_many :videos
 
-  after_save do
+  after_commit do
     ActionCable.server.broadcast('subscriptions', serialize)
   end
 
