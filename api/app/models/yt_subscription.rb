@@ -41,10 +41,10 @@ class YtSubscription < Subscription
 
   def refresh_metadata
     update!(
-      title: hash_find_dig(channel_info, :metadata, :title),
+      title: hash_find_dig(channel_info, :response, :metadata, :title),
+      thumbnail_url: hash_find_dig(channel_info, :response, :metadata, :avatar, :thumbnails, :url),
+      description: hash_find_dig(channel_info, :response, :metadata, :description),
       video_count: -1,
-      thumbnail_url: hash_find_dig(channel_info, :metadata, :avatar, :thumbnails, :url),
-      description: hash_find_dig(channel_info, :metadata, :description),
       subscriber_count: -1,
     )
   end
