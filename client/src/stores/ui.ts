@@ -3,8 +3,9 @@ import { action, observable } from "mobx";
 import { toast } from "react-toastify";
 
 export default class Klass {
-  @observable page: string = "subscriptions";
+  @observable page: string = "videos";
   @observable seed: number = Math.random();
+  @observable videosSize = "small";
 
   constructor() {
     setInterval(this.resetSeed, 1000);
