@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardContent,
   CardImage,
@@ -9,11 +8,10 @@ import {
   Control,
   Field,
   Image,
-  Label,
   Select
 } from "bloomer";
-import { FaTh, FaThLarge } from "react-icons/fa";
 
+import BigSmall from "../components/bigSmall";
 import DatapairGroup from "../components/datapairGroup";
 import Layout from "../components/layout";
 import React from "react";
@@ -25,25 +23,6 @@ import { format } from "timeago.js";
 import { observer } from "mobx-react";
 import store from "../stores";
 
-const Code = observer((props: any) => {
-  return (
-    <Content
-      style={{
-        borderTop: `1px solid ${colors.lightGray}`,
-        borderBottom: `1px solid ${colors.lightGray}`,
-        whiteSpace: "pre-wrap",
-        wordWrap: "break-word",
-        maxHeight: "10em",
-        overflow: "auto",
-        padding: "1.5em",
-        backgroundColor: props.color || "white"
-      }}
-    >
-      {props.children}
-    </Content>
-  );
-});
-
 const VideoCard = observer((props: any) => {
   return (
     <Card>
@@ -52,24 +31,26 @@ const VideoCard = observer((props: any) => {
       </CardImage>
       <CardContent style={{ overflow: "hidden" }}>
         <Content>{props.video.title}</Content>
+        {store.ui.persistent.videosSize === "small" && (
+          <Content> {props.video.status}</Content>
+        )}
       </CardContent>
-      {store.ui.videosSize === "large" && (
+      {store.ui.persistent.videosSize === "large" && (
         <Content
           style={{
-            borderTop: `1px solid ${colors.lightGray}`,
-            borderBottom: `1px solid ${colors.lightGray}`,
             whiteSpace: "pre-wrap",
             wordWrap: "break-word",
-            maxHeight: "10em",
+            maxHeight: "20em",
             overflow: "auto",
             padding: "1.5em",
-            backgroundColor: props.color || "white"
+            backgroundColor: props.color || "white",
+            margin: 0
           }}
         >
           {props.video.description}
         </Content>
       )}
-      {store.ui.videosSize === "large" && (
+      {store.ui.persistent.videosSize === "large" && (
         <CardContent style={{ overflow: "hidden" }}>
           <DatapairGroup
             pairs={{
@@ -99,15 +80,13 @@ const content = (filterSubscriptionId: number) => {
 
   var columnClass =
     "card-columns columns-4-desktop columns-2-tablet columns-1-mobile";
-  if (store.ui.videosSize === "large") {
+  if (store.ui.persistent.videosSize === "large") {
     columnClass =
       "card-columns columns-2-desktop columns-2-tablet columns-1-mobile";
   }
 
   return (
     <div>
-      <hr />
-
       <Columns>
         <Column>
           <Columns>
@@ -163,25 +142,12 @@ export default observer(() => {
           </Field>
         </Column>
         <Column isSize="1/3" hasTextAlign="right">
-          <span
-            className="buttons has-addons"
-            style={{ textAlign: "right", display: "block" }}
-          >
-            <Button
-              isOutlined
-              onClick={() => (store.ui.videosSize = "small")}
-              isHovered={store.ui.videosSize === "small"}
-            >
-              <FaTh />
-            </Button>
-            <Button
-              isOutlined
-              onClick={() => (store.ui.videosSize = "large")}
-              isHovered={store.ui.videosSize === "large"}
-            >
-              <FaThLarge />
-            </Button>
-          </span>
+          <BigSmall
+            onBig={() => store.ui.setPersistent("videosSize", "large")}
+            isBig={store.ui.persistent.videosSize === "large"}
+            onSmall={() => store.ui.setPersistent("videosSize", "small")}
+            isSmall={store.ui.persistent.videosSize === "small"}
+          />
         </Column>
       </Columns>
 

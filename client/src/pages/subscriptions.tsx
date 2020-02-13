@@ -1,5 +1,6 @@
 import { Column, Columns, Control, Field, Input } from "bloomer";
 
+import BigSmall from "../components/bigSmall";
 import { FaCheck } from "react-icons/fa";
 import Layout from "../components/layout";
 import LoadedButton from "../components/loadedButton";
@@ -65,6 +66,14 @@ class Klass extends React.Component {
                   .forEach(s => (s.syncing = true));
                 store.ui.successNotification("Syncing all subscriptions!");
               }}
+            />
+            <BigSmall
+              onBig={() => store.ui.setPersistent("subscriptionsSize", "large")}
+              isBig={store.ui.persistent.subscriptionsSize === "large"}
+              onSmall={() =>
+                store.ui.setPersistent("subscriptionsSize", "small")
+              }
+              isSmall={store.ui.persistent.subscriptionsSize === "small"}
             />
           </Column>
         </Columns>

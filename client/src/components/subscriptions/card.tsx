@@ -28,26 +28,28 @@ export default observer(
     };
 
     render() {
+      const s = this.props.subscription;
+
       const sync = (
         <CardFooterItem
-          href={this.props.subscription.syncing ? undefined : "#"}
+          href={s.syncing ? undefined : "#"}
           style={{ color: colors.text }}
           onClick={() => {
-            if (this.props.subscription.syncing) {
+            if (s.syncing) {
               return;
             }
 
             axios
-              .post(`${host}/subscriptions/${this.props.subscription.id}/sync`)
-              .then(() => (this.props.subscription.syncing = true))
+              .post(`${host}/subscriptions/${s.id}/sync`)
+              .then(() => (s.syncing = true))
               .catch(() => {
                 store.ui.errorNotification(
-                  `Sync request for ${this.props.subscription.title} failed!`
+                  `Sync request for ${s.title} failed!`
                 );
               });
           }}
         >
-          <FaSync className={this.props.subscription.syncing ? "spin" : ""} />
+          <FaSync className={s.syncing ? "spin" : ""} />
         </CardFooterItem>
       );
 
@@ -56,7 +58,7 @@ export default observer(
           href="#"
           onClick={() => {
             store.ui.page = "videos";
-            store.videos.setFilterSubcriptionId(this.props.subscription.id);
+            store.videos.setFilterSubcriptionId(s.id);
           }}
           style={{ color: colors.text }}
         >
@@ -72,14 +74,14 @@ export default observer(
             this.setState({ deleting: true });
 
             axios
-              .delete(`${host}/subscriptions/${this.props.subscription.id}`)
+              .delete(`${host}/subscriptions/${s.id}`)
               .then(() => {
                 store.subscriptions.refresh();
                 this.setState({ deleting: false });
               })
               .catch(() => {
                 store.ui.errorNotification(
-                  `Delete for ${this.props.subscription.title} failed! Some files may still remain.`
+                  `Delete for ${s.title} failed! Some files may still remain.`
                 );
                 this.setState({ deleting: false });
               });
@@ -92,10 +94,16 @@ export default observer(
       return (
         <Card>
           <CardContent style={{ overflow: "hidden" }}>
-            <Name subscription={this.props.subscription} />
-            <Description subscription={this.props.subscription} />
+            <Name subscription={s} />
+            {store.ui.persistent.subscriptionsSize == "small" &&
+              `${s.videosDownloaded} ready of ${s.videosScheduled} scheduled`}
+            {store.ui.persistent.subscriptionsSize == "large" && (
+              <Description subscription={s} />
+            )}
             <Content>
-              <Detail subscription={this.props.subscription} />
+              {store.ui.persistent.subscriptionsSize == "large" && (
+                <Detail subscription={s} />
+              )}
             </Content>
           </CardContent>
           <CardFooter>
