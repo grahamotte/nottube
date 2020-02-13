@@ -5,7 +5,7 @@ class SubscriptionsController < ApplicationController
       return
     end
 
-    s = subscription_class.create!(url: url_param, keep_count: 2)
+    s = subscription_class.create!(url: url_param)
     SyncJob.perform_later(s.id)
 
     head :ok
