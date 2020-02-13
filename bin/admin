@@ -4,6 +4,7 @@ set -e
 
 ACTION=$1
 ENV=$2
+OPT=$3
 
 if [[ $ACTION == 'deploy' ]]; then
   if [[ $ENV == 'dev' ]]; then
@@ -21,10 +22,16 @@ if [[ $ACTION == 'deploy' ]]; then
     export API_HOST=192.168.1.201
     export DATA_DIR=/mnt/collection/pt
     export ENABLE_CLOCK=1
-    docker-compose -H "ssh://me@$API_HOST" down
-    docker -H "ssh://me@$API_HOST" system prune --all --force
-    docker-compose -H "ssh://me@$API_HOST" build --no-cache
-    docker-compose -H "ssh://me@$API_HOST" up --detach
+
+    if [[ $OPT == '--quick' ]]; then
+      docker-compose -H "ssh://me@$API_HOST" down
+      docker-compose -H "ssh://me@$API_HOST" up --build --detach
+    else
+      docker-compose -H "ssh://me@$API_HOST" down
+      docker -H "ssh://me@$API_HOST" system prune --all --force
+      docker-compose -H "ssh://me@$API_HOST" build --no-cache
+      docker-compose -H "ssh://me@$API_HOST" up --detach
+    fi
   fi
 fi
 
