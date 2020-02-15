@@ -77,11 +77,15 @@ class Klass extends React.Component {
             />
           </Column>
         </Columns>
-        <div className="card-columns columns-3-desktop columns-2-tablet columns-1-mobile">
+        <Columns isMultiline>
           {store.subscriptions.all.map((s, si) => {
-            return <SubscriptionCard key={si} subscription={s} />;
+            return (
+              <Column key={si} isSize="1/3">
+                <SubscriptionCard subscription={s} />
+              </Column>
+            );
           })}
-        </div>
+        </Columns>
       </Layout>
     );
   }

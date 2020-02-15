@@ -18,51 +18,60 @@ import React from "react";
 import SubDescription from "../components/subscriptions/description";
 import SubDetail from "../components/subscriptions/detail";
 import SubName from "../components/subscriptions/name";
-import colors from "../utils/colors";
 import { format } from "timeago.js";
 import { observer } from "mobx-react";
 import store from "../stores";
 
-const VideoCard = observer((props: any) => {
+const SmallVideoCard = observer((props: any) => {
+  return (
+    <Card>
+      <CardImage>
+        <Image src={props.video.thumbnailUrl} />
+      </CardImage>
+      {props.video.status && (
+        <CardContent style={{ overflow: "hidden" }}>
+          <Content>{props.video.status}</Content>
+        </CardContent>
+      )}
+    </Card>
+  );
+});
+
+const LargeVideoCard = observer((props: any) => {
   return (
     <Card>
       <CardImage>
         <Image src={props.video.thumbnailUrl} />
       </CardImage>
       <CardContent style={{ overflow: "hidden" }}>
-        <Content>{props.video.title}</Content>
-        {store.ui.persistent.videosSize === "small" && (
-          <Content> {props.video.status}</Content>
-        )}
-      </CardContent>
-      {store.ui.persistent.videosSize === "large" && (
-        <Content
-          style={{
-            whiteSpace: "pre-wrap",
-            wordWrap: "break-word",
-            maxHeight: "20em",
-            overflow: "auto",
-            padding: "1.5em",
-            backgroundColor: props.color || "white",
-            margin: 0
-          }}
-        >
-          {props.video.description}
+        <Content>
+          <b>{props.video.title}</b>
         </Content>
-      )}
-      {store.ui.persistent.videosSize === "large" && (
-        <CardContent style={{ overflow: "hidden" }}>
-          <DatapairGroup
-            pairs={{
-              Status: props.video.status,
-              Duration: `${(props.video.duration / 60).toFixed(2)} min`,
-              Published: format(props.video.publishedAt),
-              ID: props.video.remoteId,
-              Updated: format(props.video.updatedAt)
-            }}
-          />
-        </CardContent>
-      )}
+      </CardContent>
+      <Content
+        style={{
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+          maxHeight: "20em",
+          overflow: "auto",
+          padding: "1.5em",
+          backgroundColor: props.color || "white",
+          margin: 0
+        }}
+      >
+        <small>{props.video.description}</small>
+      </Content>
+      <CardContent style={{ overflow: "hidden" }}>
+        <DatapairGroup
+          pairs={{
+            Status: props.video.status,
+            Duration: `${(props.video.duration / 60).toFixed(2)} min`,
+            Published: format(props.video.publishedAt),
+            ID: props.video.remoteId,
+            Updated: format(props.video.updatedAt)
+          }}
+        />
+      </CardContent>
     </Card>
   );
 });
@@ -77,13 +86,6 @@ const content = (filterSubscriptionId: number) => {
   }
 
   const s = store.subscriptions.fromId(store.videos.filterSubscriptionId);
-
-  var columnClass =
-    "card-columns columns-4-desktop columns-2-tablet columns-1-mobile";
-  if (store.ui.persistent.videosSize === "large") {
-    columnClass =
-      "card-columns columns-2-desktop columns-2-tablet columns-1-mobile";
-  }
 
   return (
     <div>
@@ -107,11 +109,24 @@ const content = (filterSubscriptionId: number) => {
 
       <hr />
 
-      <div className={columnClass}>
+      <Columns isMultiline>
         {store.videos.filteredResults.map((v, i) => {
-          return <VideoCard key={i} video={v} />;
+          return (
+            <Column
+              key={i}
+              isSize={
+                store.ui.persistent.videosSize === "large" ? "1/3" : "1/4"
+              }
+            >
+              {store.ui.persistent.videosSize === "large" ? (
+                <LargeVideoCard video={v} />
+              ) : (
+                <SmallVideoCard video={v} />
+              )}
+            </Column>
+          );
         })}
-      </div>
+      </Columns>
     </div>
   );
 };

@@ -38,6 +38,6 @@ export default class Video {
       return "Scheduled";
     }
 
-    return "--";
+    return undefined;
   }
 }

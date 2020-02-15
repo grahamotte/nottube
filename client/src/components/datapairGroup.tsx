@@ -17,7 +17,7 @@ export default observer((props: any) => {
   const values = Object.keys(props.pairs).map((p: any, pi: number) => {
     return (
       <Column isSize="2/3" key={`value${pi}`}>
-        <small>{props.pairs[p]}</small>
+        <small>{props.pairs[p] || "--"}</small>
       </Column>
     );
   });
