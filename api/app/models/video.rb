@@ -39,6 +39,8 @@ class Video < ApplicationRecord
     File.exists?(file_path)
   end
 
+  alias downloaded? file_exists?
+
   def refresh_metadata!
     raise 'implement me'
   end
