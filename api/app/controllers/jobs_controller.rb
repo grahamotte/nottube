@@ -5,7 +5,7 @@ class JobsController < ApplicationController
         class: j.payload_object.job_data.dig("job_class"),
         arguments: j.payload_object.job_data.dig("arguments").join(", "),
         attempts: j.attempts,
-        error: j.last_error&.split("\n")&.first(2)&.join("\n"),
+        error: j.last_error,
         created_at: j.created_at,
         running: j.locked_at.present?,
       }
