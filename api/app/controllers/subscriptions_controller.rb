@@ -12,9 +12,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def sync
-    SyncJob.perform_later(
-      Subscription.find_by!(id: params.require(:id)).id
-    )
+    SyncJob.perform_later(params.require(:id))
 
     head :ok
   end
