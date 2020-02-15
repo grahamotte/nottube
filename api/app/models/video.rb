@@ -21,14 +21,6 @@ class Video < ApplicationRecord
 
   default_scope { order('published_at desc') }
 
-  def execute_download
-    raise 'implement me'
-  end
-
-  def refresh_metadata
-    raise 'implement me'
-  end
-
   def serialize
     attributes
       .symbolize_keys
@@ -36,6 +28,45 @@ class Video < ApplicationRecord
         scheduled: scheduled?,
         downloaded: file_exists?,
       )
+  end
+
+  def scheduled?
+    subscription.videos_to_keep.include?(self)
+  end
+
+  def file_exists?
+    return false if file_path.blank?
+    File.exists?(file_path)
+  end
+
+  def refresh_metadata!
+    raise 'implement me'
+  end
+
+  def download!
+    return false if file_exists?
+    return false unless scheduled?
+
+    execute_download
+
+    if file_exists?
+      FileUtils.chmod(0777, file_path)
+      update!(file_path: file_path)
+      return true
+    end
+
+    false
+  end
+
+  def remove!
+    File.delete(file_path) if file_exists?
+    update!(file_path: nil)
+  end
+
+  private
+
+  def execute_download
+    raise 'implement me'
   end
 
   def videos_dir
@@ -64,40 +95,6 @@ class Video < ApplicationRecord
   def file_path
     possible_file_paths.find { |fp| File.exists?(fp) }
   end
-
-  def scheduled?
-    return false if file_exists?
-    return false if subscription.videos_to_keep.exclude?(self)
-
-    true
-  end
-
-  def file_exists?
-    return false if file_path.blank?
-    File.exists?(file_path)
-  end
-
-  def download!
-    return false if file_exists?
-    return false unless scheduled?
-
-    execute_download
-
-    if file_exists?
-      FileUtils.chmod(0777, file_path)
-      update!(file_path: file_path)
-      return true
-    end
-
-    false
-  end
-
-  def remove!
-    File.delete(file_path) if file_exists?
-    update!(file_path: nil)
-  end
-
-  private
 
   def clean_string(string)
     string
