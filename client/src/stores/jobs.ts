@@ -8,6 +8,8 @@ export default class Klass {
   @observable all = [];
 
   constructor() {
+    this.refresh();
+
     setInterval(() => {
       if (store.ui.page === "queue") {
         this.refresh();

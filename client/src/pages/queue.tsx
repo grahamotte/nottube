@@ -37,6 +37,11 @@ class Klass extends React.Component {
       );
     }
 
+    const tdStyle: Object = {
+      // verticalAlign: "middle",
+      whiteSpace: "nowrap"
+    };
+
     return (
       <Layout>
         <Columns>
@@ -53,43 +58,37 @@ class Klass extends React.Component {
           </Column>
         </Columns>
 
-        <Table style={{ width: "100%" }}>
+        <Table className="is-fullwidth">
           <thead>
             <tr>
               <th></th>
-              <th>Age</th>
               <th>Job</th>
-              <th>Args</th>
+              <th>Age</th>
               <th>Error</th>
             </tr>
           </thead>
 
           <tbody>
-            {store.jobs.all.map((j: any, ji) => {
-              return (
-                <tr key={ji}>
-                  <td style={{ verticalAlign: "middle" }}>
-                    {j.running && <Spinner />}
-                  </td>
-                  <td style={{ verticalAlign: "middle", whiteSpace: "nowrap" }}>
-                    {format(j.created_at)}
-                  </td>
-                  <td style={{ verticalAlign: "middle" }}>{j.class}</td>
-                  <td style={{ verticalAlign: "middle" }}>
-                    <Code>{j.arguments}</Code>
-                  </td>
-                  <td
-                    style={{
-                      verticalAlign: "middle"
-                    }}
-                  >
-                    {j.error && j.error.length > 0 && (
-                      <Code color={colors.lightDanger}>{j.error}</Code>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
+            {store.jobs.all
+              .sort((a: any, b: any) => a.created_at - b.created_at)
+              .map((j: any, ji) => {
+                return (
+                  <tr key={ji}>
+                    <td style={tdStyle}>{j.running && <Spinner />}</td>
+                    <td style={tdStyle}>
+                      {j.class}({j.arguments})
+                    </td>
+                    <td style={tdStyle}>
+                      {format(new Date(j.created_at * 1000))}
+                    </td>
+                    <td style={tdStyle}>
+                      {j.error && j.error.length > 0 && (
+                        <Code color={colors.lightDanger}>{j.error}</Code>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </Table>
       </Layout>

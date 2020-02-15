@@ -3,7 +3,7 @@ class JobsController < ApplicationController
     jobs = Delayed::Job.all.sort_by(&:created_at).map do |j|
       {
         class: j.payload_object.job_data.dig("job_class"),
-        arguments: j.payload_object.job_data.dig("arguments").map { |x| "- #{x}" }.join("\n"),
+        arguments: j.payload_object.job_data.dig("arguments").join(", "),
         attempts: j.attempts,
         error: j.last_error&.split("\n")&.first(2)&.join("\n"),
         created_at: j.created_at,
