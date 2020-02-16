@@ -25,5 +25,10 @@ module PlextubeApi
 
     config.api_only = true
     config.active_job.queue_adapter = :delayed_job
+
+    config.generators do |g|
+      g.test_framework(:minitest, fixture_replacement: :fabrication)
+      g.fixture_replacement(:fabrication, dir: "test/fabricators")
+    end
   end
 end

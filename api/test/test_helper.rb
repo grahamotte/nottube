@@ -6,7 +6,9 @@ require 'mocha/minitest'
 
 WebMock.disable_net_connect!
 
-class ActiveSupport::TestCase
-  parallelize(workers: :number_of_processors)
-  fixtures :all
+class UnitTest < ActiveSupport::TestCase
+  def assert_hashes_mostly_equal(eh, ah, ignore_values_for: [])
+    assert_equal eh.keys.sort, ah.keys.sort
+    assert_equal eh.except(*ignore_values_for), ah.except(*ignore_values_for)
+  end
 end

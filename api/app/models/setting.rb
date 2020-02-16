@@ -26,7 +26,7 @@ class Setting < ApplicationRecord
   validate :validate_nebula_creds, unless: -> { nebula_user.blank? && nebula_pass.blank? }
 
   def nebula_tokens
-    parsed_cache = JSON.parse(Setting.instance.nebula_cache.presence || '{}')
+    parsed_cache = JSON.parse(nebula_cache.presence || '{}')
     ttl = parsed_cache.dig('user', 'zype_auth_info', 'expires_at')
 
     return parsed_cache if ttl.present? && Time.now < Time.at(ttl)
