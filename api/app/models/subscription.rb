@@ -38,6 +38,22 @@ class Subscription < ApplicationRecord
     )
   end
 
+  def syncing?
+    job_datas = Delayed::Job
+      .all
+      .map { |j| j.payload_object.job_data }
+
+    return true if job_datas
+      .select { |j| j.dig('job_class') == 'SyncJob' }
+      .any? { |j| j.dig('arguments').include?(id) }
+
+    return true if job_datas
+      .select { |j| j.dig('job_class') == 'DownloadVideoJob' }
+      .any? { |j| (j.dig('arguments') & s.videos.map(&:id)).present? }
+
+    false
+  end
+
   def videos_to_keep
     videos.first(Setting.instance.keep_count)
   end
