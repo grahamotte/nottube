@@ -12,8 +12,6 @@ export default class Klass {
   };
 
   constructor() {
-    setInterval(this.resetSeed, 1000);
-
     Object.keys(this.persistentDefaults).forEach((k: string) => {
       this.persistent[k] =
         localStorage.getItem(k) || this.persistentDefaults[k];

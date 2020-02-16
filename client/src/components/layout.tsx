@@ -15,7 +15,7 @@ import { observer } from "mobx-react";
 import store from "../stores";
 
 const logo = (seed: any) => {
-  return ["P", "L", "E", "X", "T", "U", "B", "E"].map((l, k) => {
+  return ["N", "O", "T", "T", "U", "B", "E"].map((l, k) => {
     return Math.random() >= 0.5 ? (
       <span style={{ color: colors.accent }} key={k}>
         {l}
@@ -51,7 +51,9 @@ export default observer(props => {
       <Navbar style={barStyle}>
         <NavbarBrand>
           <NavbarItem>
-            <b className="disable-select">{logo(store.ui.seed)}</b>
+            <b className="disable-select" onClick={store.ui.resetSeed}>
+              {logo(store.ui.seed)}
+            </b>
           </NavbarItem>
         </NavbarBrand>
         <NavbarMenu isActive={true}>

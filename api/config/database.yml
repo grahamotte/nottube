@@ -1,5 +1,5 @@
 production:
-  database: plextube_production
+  database: nottube_production
   adapter: postgresql
   encoding: unicode
   host: postgres
@@ -8,7 +8,7 @@ production:
   pool: 5
 
 development:
-  database: plextube_development
+  database: nottube_development
   adapter: postgresql
   encoding: unicode
   host: localhost
@@ -17,7 +17,7 @@ development:
   pool: 5
 
 test:
-  database: plextube_test
+  database: nottube_test
   adapter: postgresql
   encoding: unicode
   host: localhost

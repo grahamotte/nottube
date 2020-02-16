@@ -1,4 +1,4 @@
-name: Test
+name: Build and Test
 
 on: [push]
 
@@ -8,13 +8,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Install sqlite3
-      run: sudo apt install sqlite3 libsqlite3-dev
+    # - name: Install sqlite3
+    #   run: sudo apt install sqlite3 libsqlite3-dev
 
-    - name: Install Ruby
-      uses: actions/setup-ruby@v1
-      with:
-        ruby-version: 2.6.x
+    # - name: Install Ruby
+    #   uses: actions/setup-ruby@v1
+    #   with:
+    #     ruby-version: 2.6.x
 
     # - name: Bundle
     #   run: |
